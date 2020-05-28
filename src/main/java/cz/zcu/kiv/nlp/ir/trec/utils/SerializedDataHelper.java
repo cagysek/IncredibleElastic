@@ -97,7 +97,7 @@ public class SerializedDataHelper {
         try {
             File serializedFile = new File(Config.getIndexPath());
 
-            final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(serializedFile));
+            final ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(serializedFile)));
 
             object = objectInputStream.readObject();
 

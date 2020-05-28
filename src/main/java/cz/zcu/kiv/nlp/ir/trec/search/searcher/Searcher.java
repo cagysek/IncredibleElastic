@@ -1,4 +1,4 @@
-package cz.zcu.kiv.nlp.ir.trec.Index;
+package cz.zcu.kiv.nlp.ir.trec.search.searcher;
 
 import cz.zcu.kiv.nlp.ir.trec.Index.Index;
 import cz.zcu.kiv.nlp.ir.trec.data.result.Result;

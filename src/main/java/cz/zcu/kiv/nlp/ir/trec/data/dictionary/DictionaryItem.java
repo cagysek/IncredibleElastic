@@ -1,47 +1,43 @@
 package cz.zcu.kiv.nlp.ir.trec.data.dictionary;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.HashMap;
 
 public class DictionaryItem implements Serializable
 {
-    private int totalCount = 1;
-
-    private HashSet<String> inDocumentList = new HashSet<>();
-
     final static long serialVersionUID = -5097715898427114008L;
+
+    private HashMap<String, WordStats> documentWordStats = new HashMap<>();
+
 
     private float idf;
 
 
     public DictionaryItem(String documentId)
     {
-        this.inDocumentList.add(documentId);
+        this.documentWordStats.put(documentId, new WordStats());
     }
 
-    public int getTotalCount()
+    public HashMap<String, WordStats> getDocumentWordStats()
     {
-        return totalCount;
+        return documentWordStats;
     }
 
-    public HashSet<String> getInLists()
+    public void addWordStats(String documentId)
     {
-        return inDocumentList;
-    }
-
-    public void incrementTotalCount()
-    {
-        this.totalCount = this.totalCount + 1;
-    }
-
-    public void addDocumentId(String id)
-    {
-        this.inDocumentList.add(id);
+        if (this.documentWordStats.containsKey(documentId))
+        {
+            this.documentWordStats.get(documentId).incrementCount();
+        }
+        else
+        {
+            this.documentWordStats.put(documentId, new WordStats());
+        }
     }
 
     public int getDf()
     {
-        return this.inDocumentList.size();
+        return this.documentWordStats.size();
     }
 
     public float getIdf()

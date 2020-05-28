@@ -1,14 +1,12 @@
 package cz.zcu.kiv.nlp.ir.trec.Index;
 
 import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.Preprocessing;
-import cz.zcu.kiv.nlp.ir.trec.config.Config;
 import cz.zcu.kiv.nlp.ir.trec.data.dictionary.Dictionary;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.result.Result;
-import cz.zcu.kiv.nlp.ir.trec.Index.loader.ILoader;
+import cz.zcu.kiv.nlp.ir.trec.search.searcher.Searcher;
 import cz.zcu.kiv.nlp.ir.trec.utils.SerializedDataHelper;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -40,19 +38,35 @@ public class Index implements Indexer, Searcher
      */
     public void index(List<Document> documents)
     {
-        for (Document document : documents)
+        if (false)
         {
-            for (String word : this.preprocessing.process(document))
+            for (Document document : documents)
             {
-                this.dictionary.add(word, document.getId());
+                for (String word : this.preprocessing.process(document))
+                {
+                    this.dictionary.add(word, document.getId());
+                }
             }
+
+            // nastavím do dictionary počet dokumentů kolik se indexovalo
+            this.dictionary.setIndexedDocumentCount(documents.size());
+
+            // reindex IDF
+            this.dictionary.setUpDictionaryItemScales();
+
+            SerializedDataHelper.saveIndex(this.dictionary);
+        }
+        else
+        {
+            System.out.println("Načítám data");
+            this.dictionary = SerializedDataHelper.loadIndex();
+            System.out.println("Načteno");
+
+            this.dictionary.print();
         }
 
-        // nastavím do dictionary počet dokumentů kolik se indexovalo
-        this.dictionary.setIndexedDocumentCount(documents.size());
 
-        // reindex IDF
-        this.dictionary.reindexIDF();
+
     }
 
 
