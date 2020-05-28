@@ -12,6 +12,8 @@ public class WordStats implements Serializable
 
     private float tfIdf;
 
+    private DocumentBag documentBag;
+
     public int getCount()
     {
         return count;
@@ -45,5 +47,20 @@ public class WordStats implements Serializable
     public void setTfIdf(float tfIdf)
     {
         this.tfIdf = tfIdf;
+    }
+
+    public WordStats(DocumentBag documentBag)
+    {
+        this.documentBag = documentBag;
+    }
+
+    public DocumentBag getDocumentBag()
+    {
+        return documentBag;
+    }
+
+    public void setDocumentBag(DocumentBag documentBag)
+    {
+        this.documentBag = documentBag;
     }
 }

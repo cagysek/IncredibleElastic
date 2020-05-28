@@ -64,7 +64,7 @@ public class TestTrecEval {
      */
     public static void main(String args[]) throws IOException {
         configureLogger();
-
+        long time1 = System.currentTimeMillis();
         Preprocessing preprocessing = new Preprocessing(new CzechStemmerAgressive(),
                                                         new AdvancedTokenizer(),
                                                         IOUtils.getStopWords(),
@@ -80,7 +80,9 @@ public class TestTrecEval {
         List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Czech).loadDocuments();
 
         index.index(documents);
+        long time2 = System.currentTimeMillis();
 
+        System.out.println("Index time: " + (time2 - time1));
 
 
         return;

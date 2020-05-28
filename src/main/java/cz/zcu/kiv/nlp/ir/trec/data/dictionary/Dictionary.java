@@ -13,15 +13,15 @@ public class Dictionary implements Serializable
 
     private int indexedDocumentCount = 0;
 
-    public void add(String word, String documentId)
+    public void add(String word, DocumentBag documentBag)
     {
         if (this.dictionary.containsKey(word))
         {
-            this.dictionary.get(word).addWordStats(documentId);
+            this.dictionary.get(word).addWordStats(documentBag);
         }
         else
         {
-            this.dictionary.put(word, new DictionaryItem(documentId));
+            this.dictionary.put(word, new DictionaryItem(documentBag));
         }
     }
 

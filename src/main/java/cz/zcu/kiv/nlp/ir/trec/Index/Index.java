@@ -2,11 +2,13 @@ package cz.zcu.kiv.nlp.ir.trec.Index;
 
 import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.Preprocessing;
 import cz.zcu.kiv.nlp.ir.trec.data.dictionary.Dictionary;
+import cz.zcu.kiv.nlp.ir.trec.data.dictionary.DocumentBag;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.result.Result;
 import cz.zcu.kiv.nlp.ir.trec.search.searcher.Searcher;
 import cz.zcu.kiv.nlp.ir.trec.utils.SerializedDataHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,13 +40,21 @@ public class Index implements Indexer, Searcher
      */
     public void index(List<Document> documents)
     {
-        if (false)
+        if (true)
         {
+            // temp list pro držení referencí na dokumenty pro pozdější průchod pro vypočítání střední hodnot dokumentů
+            ArrayList<DocumentBag> documentBags = new ArrayList<>();
+
             for (Document document : documents)
             {
+                DocumentBag documentBag = new DocumentBag(document.getId());
+
                 for (String word : this.preprocessing.process(document))
                 {
-                    this.dictionary.add(word, document.getId());
+                    documentBag.addWord(word);
+                    documentBags.add(documentBag);
+
+                    this.dictionary.add(word, documentBag);
                 }
             }
 
@@ -54,7 +64,7 @@ public class Index implements Indexer, Searcher
             // reindex IDF
             this.dictionary.setUpDictionaryItemScales();
 
-            SerializedDataHelper.saveIndex(this.dictionary);
+        //    SerializedDataHelper.saveIndex(this.dictionary);
         }
         else
         {

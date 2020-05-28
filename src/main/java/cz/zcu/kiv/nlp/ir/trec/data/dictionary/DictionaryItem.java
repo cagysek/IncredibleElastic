@@ -13,9 +13,9 @@ public class DictionaryItem implements Serializable
     private float idf;
 
 
-    public DictionaryItem(String documentId)
+    public DictionaryItem(DocumentBag documentBag)
     {
-        this.documentWordStats.put(documentId, new WordStats());
+        this.documentWordStats.put(documentBag.getId(), new WordStats(documentBag));
     }
 
     public HashMap<String, WordStats> getDocumentWordStats()
@@ -23,15 +23,15 @@ public class DictionaryItem implements Serializable
         return documentWordStats;
     }
 
-    public void addWordStats(String documentId)
+    public void addWordStats(DocumentBag documentBag)
     {
-        if (this.documentWordStats.containsKey(documentId))
+        if (this.documentWordStats.containsKey(documentBag.getId()))
         {
-            this.documentWordStats.get(documentId).incrementCount();
+            this.documentWordStats.get(documentBag.getId()).incrementCount();
         }
         else
         {
-            this.documentWordStats.put(documentId, new WordStats());
+            this.documentWordStats.put(documentBag.getId(), new WordStats(documentBag));
         }
     }
 
