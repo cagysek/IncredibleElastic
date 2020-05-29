@@ -1,13 +1,13 @@
-package cz.zcu.kiv.nlp.ir.trec.data.dictionary;
+package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
 import cz.zcu.kiv.nlp.ir.trec.model.VectorSpaceModel;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class Dictionary implements Serializable
+public class InvertedIndex implements Serializable
 {
-    private HashMap<String, DictionaryItem> dictionary = new HashMap<>();
+    private HashMap<String, InvertedIndexItem> invertedIndex = new HashMap<>();
 
     final static long serialVersionUID = -5097715898427114010L;
 
@@ -15,22 +15,22 @@ public class Dictionary implements Serializable
 
     public void add(String word, DocumentBag documentBag)
     {
-        if (this.dictionary.containsKey(word))
+        if (this.invertedIndex.containsKey(word))
         {
-            this.dictionary.get(word).addWordStats(documentBag);
+            this.invertedIndex.get(word).addWordStats(documentBag);
         }
         else
         {
-            this.dictionary.put(word, new DictionaryItem(documentBag));
+            this.invertedIndex.put(word, new InvertedIndexItem(documentBag));
         }
     }
 
-    public void setUpIDF(DictionaryItem item)
+    public void setUpIDF(InvertedIndexItem item)
     {
         item.setIdf(VectorSpaceModel.getIDF(this.indexedDocumentCount, item.getDf()));
     }
 
-    public void setUpTFIDF(DictionaryItem item)
+    public void setUpTFIDF(InvertedIndexItem item)
     {
         for (String documentId : item.getDocumentWordStats().keySet())
         {
@@ -42,9 +42,9 @@ public class Dictionary implements Serializable
 
     public void setUpDictionaryItemScales()
     {
-        for (String name: dictionary.keySet()){
+        for (String name: invertedIndex.keySet()){
 
-            DictionaryItem item = dictionary.get(name);
+            InvertedIndexItem item = invertedIndex.get(name);
 
             this.setUpIDF(item);
 
@@ -54,12 +54,12 @@ public class Dictionary implements Serializable
 
     public void print()
     {
-        for (String name: dictionary.keySet()){
+        for (String name: invertedIndex.keySet()){
             String key = name.toString();
-            int value = dictionary.get(name).getDocumentWordStats().size();
+            int value = invertedIndex.get(name).getDocumentWordStats().size();
 
             String ids = "";
-            HashMap<String, WordStats> map = dictionary.get(name).getDocumentWordStats();
+            HashMap<String, WordStats> map = invertedIndex.get(name).getDocumentWordStats();
             for (String stats : map.keySet())
             {
                 WordStats sta = map.get(stats);

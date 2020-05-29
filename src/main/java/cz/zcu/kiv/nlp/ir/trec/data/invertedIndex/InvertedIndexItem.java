@@ -1,9 +1,9 @@
-package cz.zcu.kiv.nlp.ir.trec.data.dictionary;
+package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class DictionaryItem implements Serializable
+public class InvertedIndexItem implements Serializable
 {
     final static long serialVersionUID = -5097715898427114008L;
 
@@ -13,7 +13,7 @@ public class DictionaryItem implements Serializable
     private float idf;
 
 
-    public DictionaryItem(DocumentBag documentBag)
+    public InvertedIndexItem(DocumentBag documentBag)
     {
         this.documentWordStats.put(documentBag.getId(), new WordStats(documentBag));
     }

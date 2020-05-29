@@ -1,7 +1,7 @@
-package cz.zcu.kiv.nlp.ir.trec.data.dictionary;
+package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class DocumentBag implements Serializable
 {
@@ -9,7 +9,7 @@ public class DocumentBag implements Serializable
 
     private String id;
 
-    private ArrayList<String> words = new ArrayList<>();
+    private HashSet<String> words = new HashSet<>();
 
     public DocumentBag(String id)
     {
@@ -31,13 +31,8 @@ public class DocumentBag implements Serializable
         this.id = id;
     }
 
-    public ArrayList<String> getWords()
+    public HashSet<String> getWords()
     {
         return words;
-    }
-
-    public void setWords(ArrayList<String> words)
-    {
-        this.words = words;
     }
 }

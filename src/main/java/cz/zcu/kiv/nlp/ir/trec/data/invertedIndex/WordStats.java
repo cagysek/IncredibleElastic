@@ -1,4 +1,4 @@
-package cz.zcu.kiv.nlp.ir.trec.data.dictionary;
+package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
 import java.io.Serializable;
 

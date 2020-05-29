@@ -1,7 +1,7 @@
 package cz.zcu.kiv.nlp.ir.trec.utils;
 
 import cz.zcu.kiv.nlp.ir.trec.config.Config;
-import cz.zcu.kiv.nlp.ir.trec.data.dictionary.Dictionary;
+import cz.zcu.kiv.nlp.ir.trec.data.invertedIndex.InvertedIndex;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.object.Topic;
 import org.apache.log4j.Logger;
@@ -78,7 +78,7 @@ public class SerializedDataHelper {
     }
 
 
-    public static void saveIndex(Dictionary data) {
+    public static void saveIndex(InvertedIndex data) {
         // save data
         try {
             File outputFile = new File(Config.getIndexPath());
@@ -92,7 +92,7 @@ public class SerializedDataHelper {
         log.info("Index uložen.");
     }
 
-    static public Dictionary loadIndex() {
+    static public InvertedIndex loadIndex() {
         final Object object;
         try {
             File serializedFile = new File(Config.getIndexPath());
@@ -103,7 +103,7 @@ public class SerializedDataHelper {
 
             objectInputStream.close();
 
-            return (Dictionary) object;
+            return (InvertedIndex) object;
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);

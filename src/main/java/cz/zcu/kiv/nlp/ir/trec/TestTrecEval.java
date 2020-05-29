@@ -5,12 +5,8 @@ import cz.zcu.kiv.nlp.ir.trec.Index.loader.LoaderFactory;
 import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.Preprocessing;
 import cz.zcu.kiv.nlp.ir.trec.Index.stemmer.CzechStemmerAgressive;
 import cz.zcu.kiv.nlp.ir.trec.Index.tokenizer.AdvancedTokenizer;
-import cz.zcu.kiv.nlp.ir.trec.config.Config;
-import cz.zcu.kiv.nlp.ir.trec.data.dictionary.Dictionary;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
-import cz.zcu.kiv.nlp.ir.trec.data.object.Topic;
-import cz.zcu.kiv.nlp.ir.trec.data.result.Result;
 import cz.zcu.kiv.nlp.ir.trec.utils.IOUtils;
 import cz.zcu.kiv.nlp.ir.trec.utils.SerializedDataHelper;
 import org.apache.log4j.*;
@@ -63,7 +59,7 @@ public class TestTrecEval {
      * Metodu není třeba měnit kromě řádků označených T O D O  - tj. vytvoření objektu třídy {@link Index} a
      */
     public static void main(String args[]) throws IOException {
-        configureLogger();
+       // configureLogger();
         long time1 = System.currentTimeMillis();
         Preprocessing preprocessing = new Preprocessing(new CzechStemmerAgressive(),
                                                         new AdvancedTokenizer(),
@@ -83,6 +79,7 @@ public class TestTrecEval {
         long time2 = System.currentTimeMillis();
 
         System.out.println("Index time: " + (time2 - time1));
+        SerializedDataHelper.saveIndex(index.invertedIndex);
 
 
         return;
