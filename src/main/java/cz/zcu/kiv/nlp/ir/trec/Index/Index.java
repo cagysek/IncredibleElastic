@@ -22,7 +22,7 @@ import java.util.List;
  *
  *
  */
-public class Index implements Indexer, Searcher
+public class Index implements Indexer
 {
 
     private Preprocessing preprocessing;
@@ -65,6 +65,8 @@ public class Index implements Indexer, Searcher
             // reindex IDF
             this.invertedIndex.setUpDictionaryItemScales();
 
+            this.setUpDocumentEuclidValue(documentBags);
+
         }
         else
         {
@@ -79,14 +81,23 @@ public class Index implements Indexer, Searcher
 
     }
 
-
-
-
-
-
-    public List<Result> search(String query)
+    /**
+     * Vypočítá euklidovskou hodnotu ke každému dokumentu
+     * @param documentBags
+     */
+    private void setUpDocumentEuclidValue(ArrayList<DocumentBag> documentBags)
     {
-        //  todo implement
-        return null;
+        for (DocumentBag documentBag : documentBags)
+        {
+            float euclidValue = 0;
+            for (String documentWord : documentBag.getWords())
+            {
+                euclidValue += this.invertedIndex.getDocumentWordTFIDF(documentWord, documentBag.getId());
+            }
+
+            documentBag.setEuclidDocumentValue(euclidValue);
+        }
     }
+
+
 }

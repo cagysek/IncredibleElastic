@@ -52,6 +52,11 @@ public class InvertedIndex implements Serializable
         }
     }
 
+    public float getDocumentWordTFIDF(String word, String documentId)
+    {
+        return this.invertedIndex.get(word).getDocumentWordTFIDF(documentId);
+    }
+
     public void print()
     {
         for (String name: invertedIndex.keySet()){

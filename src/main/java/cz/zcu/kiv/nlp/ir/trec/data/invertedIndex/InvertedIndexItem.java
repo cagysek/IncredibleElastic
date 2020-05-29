@@ -35,6 +35,11 @@ public class InvertedIndexItem implements Serializable
         }
     }
 
+    public float getDocumentWordTFIDF(String documentId)
+    {
+        return this.documentWordStats.get(documentId).getTfIdf();
+    }
+
     public int getDf()
     {
         return this.documentWordStats.size();

@@ -11,6 +11,8 @@ public class DocumentBag implements Serializable
 
     private HashSet<String> words = new HashSet<>();
 
+    private float euclidDocumentValue = 0;
+
     public DocumentBag(String id)
     {
         this.id = id;
@@ -34,5 +36,15 @@ public class DocumentBag implements Serializable
     public HashSet<String> getWords()
     {
         return words;
+    }
+
+    public float getEuclidDocumentValue()
+    {
+        return euclidDocumentValue;
+    }
+
+    public void setEuclidDocumentValue(float euclidDocumentValue)
+    {
+        this.euclidDocumentValue = euclidDocumentValue;
     }
 }
