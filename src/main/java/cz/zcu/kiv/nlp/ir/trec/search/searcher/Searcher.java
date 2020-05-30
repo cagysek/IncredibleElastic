@@ -17,4 +17,6 @@ import java.util.List;
  */
 public interface Searcher {
     List<Result> search(String query);
+
+    public void setResultCount(int resultCount);
 }

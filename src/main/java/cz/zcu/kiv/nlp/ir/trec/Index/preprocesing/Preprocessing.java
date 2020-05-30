@@ -19,13 +19,15 @@ public class Preprocessing
     private boolean removeAccentsBeforeStemming;
     private boolean removeAccentsAfterStemming;
     private boolean toLowercase;
+    private boolean ignoreSingleCharacter;
 
     public Preprocessing(Stemmer stemmer,
                          Tokenizer tokenizer,
                          Set<String> stopWords,
                          boolean removeAccentsBeforeStemming,
                          boolean removeAccentsAfterStemming,
-                         boolean toLowercase
+                         boolean toLowercase,
+                         boolean ignoreSingleCharacter
     )
     {
         this.stemmer = stemmer;
@@ -34,13 +36,17 @@ public class Preprocessing
         this.removeAccentsBeforeStemming = removeAccentsBeforeStemming;
         this.removeAccentsAfterStemming = removeAccentsAfterStemming;
         this.toLowercase = toLowercase;
+        this.ignoreSingleCharacter = ignoreSingleCharacter;
     }
 
 
-    public List<String> process(Document document) {
+    public List<String> processDocument(Document document)
+    {
+        return this.processText(document.getRaw());
+    }
 
-        String data = document.getRaw();
-
+    public List<String> processText(String data)
+    {
         if (toLowercase) {
             data = data.toLowerCase();
         }
@@ -57,11 +63,21 @@ public class Preprocessing
                 continue;
             }
 
-            if (stemmer != null) {
+            if (stemmer != null)
+            {
                 token = stemmer.stem(token);
             }
-            if (removeAccentsAfterStemming) {
+            if (removeAccentsAfterStemming)
+            {
                 token = removeAccents(token);
+            }
+
+            if (ignoreSingleCharacter)
+            {
+                if (token.length() <= 1)
+                {
+                    continue;
+                }
             }
 
             processedWords.add(token);

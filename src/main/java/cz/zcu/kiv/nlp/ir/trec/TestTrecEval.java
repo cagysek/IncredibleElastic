@@ -7,6 +7,11 @@ import cz.zcu.kiv.nlp.ir.trec.Index.stemmer.CzechStemmerAgressive;
 import cz.zcu.kiv.nlp.ir.trec.Index.tokenizer.AdvancedTokenizer;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
+import cz.zcu.kiv.nlp.ir.trec.data.enums.ESearcherType;
+import cz.zcu.kiv.nlp.ir.trec.data.Topic;
+import cz.zcu.kiv.nlp.ir.trec.data.result.Result;
+import cz.zcu.kiv.nlp.ir.trec.search.searcher.Searcher;
+import cz.zcu.kiv.nlp.ir.trec.search.searcher.SearcherFactory;
 import cz.zcu.kiv.nlp.ir.trec.utils.IOUtils;
 import cz.zcu.kiv.nlp.ir.trec.utils.SerializedDataHelper;
 import org.apache.log4j.*;
@@ -66,41 +71,38 @@ public class TestTrecEval {
                                                         IOUtils.getStopWords(),
                              false,
                               true,
-                                            true);
-
-
+                                            true,
+                                     true
+        );
 
         Index index = new Index(preprocessing);
-
 
         List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Czech).loadDocuments();
 
         index.index(documents);
         long time2 = System.currentTimeMillis();
 
-        System.out.println("Index time: " + (time2 - time1));
-        SerializedDataHelper.saveIndex(index.invertedIndex);
+        System.out.println("Index time: " + ((time2 - time1) * 0.001));
 
 
-        return;
-        /*
+        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.VSM, preprocessing, index.getInvertedIndex());
+
+        time1 = System.currentTimeMillis();
+
+       // List<Result> results = searcher.search("Relevantní dokumenty mohou hovořit buď o zdravotních rizicích, nebo o skutečném propuknutí choroby či onemocnění způsobených kontaminovanou vodou.");
+        time2 = System.currentTimeMillis();
+
+        System.out.println("Search time: " + ((time2 - time1) * 0.001));
+
+      //  printResults(results);
+
+        System.out.println("Konec");
+
+
+
         List<Topic> topics = SerializedDataHelper.loadTopic(new File(OUTPUT_DIR + "/topicData.bin"));
 
         File serializedData = new File(OUTPUT_DIR + "/czechData.bin");
-
-        List<Document> documents = new ArrayList<Document>();
-        log.info("load");
-        try {
-            if (serializedData.exists()) {
-                documents = SerializedDataHelper.loadDocument(serializedData);
-            } else {
-                log.error("Cannot find " + serializedData);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info("Documents: " + documents.size());
-
 
         List<String> lines = new ArrayList<>();
 
@@ -110,7 +112,7 @@ public class TestTrecEval {
             //to ovlivní výsledné vyhledávání - zkuste změnit a uvidíte jaký MAP (Mean Average Precision) dostanete pro jednotlivé
             //kombinace např. pokud budete vyhledávat jen pomocí title (t.getTitle()) nebo jen pomocí description (t.getDescription())
             //nebo jejich kombinací (t.getTitle() + " " + t.getDescription())
-            List<Result> resultHits = index.search(t.getTitle() + " " + t.getDescription());
+            List<Result> resultHits = searcher.search(t.getTitle() + " " + t.getDescription());
 
             Comparator<Result> cmp = new Comparator<Result>() {
                 public int compare(Result o1, Result o2) {
@@ -129,6 +131,7 @@ public class TestTrecEval {
                 lines.add(t.getId() + " Q0 " + "abc" + " " + "99" + " " + 0.0 + " runindex1");
             }
         }
+     //   final File outputFile = new File(OUTPUT_DIR + "/results 2020-05-29_16_46_860.txt");
         final File outputFile = new File(OUTPUT_DIR + "/results " + SerializedDataHelper.SDF.format(System.currentTimeMillis()) + ".txt");
         IOUtils.saveFile(outputFile, lines);
         //try to run evaluation
@@ -139,12 +142,12 @@ public class TestTrecEval {
         }
 
 
-         */
+
     }
 
     private static String runTrecEval(String predictedFile) throws IOException {
 
-        String commandLine = "./trec_eval.8.1/./trec_eval" +
+        String commandLine = "./trec_eval.8.1/./trec_eval -q -c -M1000" +
                 " ./trec_eval.8.1/czech" +
                 " " + predictedFile;
 
@@ -172,5 +175,12 @@ public class TestTrecEval {
         stderr.close();
 
         return trecEvalOutput;
+    }
+
+    private static void printResults(List<Result> results)
+    {
+        for (Result r : results) {
+            System.out.println(r.toString());
+        }
     }
 }

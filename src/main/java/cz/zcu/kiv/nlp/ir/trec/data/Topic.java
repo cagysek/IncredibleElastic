@@ -1,4 +1,4 @@
-package cz.zcu.kiv.nlp.ir.trec.data.object;
+package cz.zcu.kiv.nlp.ir.trec.data;
 
 import java.io.Serializable;
 

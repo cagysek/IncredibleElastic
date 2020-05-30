@@ -27,7 +27,7 @@ public class Index implements Indexer
 
     private Preprocessing preprocessing;
 
-    public InvertedIndex invertedIndex = new InvertedIndex();
+    private InvertedIndex invertedIndex = new InvertedIndex();
 
     public Index(Preprocessing preprocessing)
     {
@@ -42,6 +42,8 @@ public class Index implements Indexer
     {
         if (true)
         {
+            System.out.println("Začínám indexovat");
+
             // temp list pro držení referencí na dokumenty pro pozdější průchod pro vypočítání střední hodnot dokumentů
             ArrayList<DocumentBag> documentBags = new ArrayList<>();
 
@@ -49,7 +51,7 @@ public class Index implements Indexer
             {
                 DocumentBag documentBag = new DocumentBag(document.getId());
 
-                for (String word : this.preprocessing.process(document))
+                for (String word : this.preprocessing.processDocument(document))
                 {
                     documentBag.addWord(word);
 
@@ -59,13 +61,22 @@ public class Index implements Indexer
                 documentBags.add(documentBag);
             }
 
+            System.out.println("Zaindexováno dokumentů: " + documents.size() + ". Počet slov: " + this.invertedIndex.getInvertedIndexSize());
+
             // nastavím do dictionary počet dokumentů kolik se indexovalo
             this.invertedIndex.setIndexedDocumentCount(documents.size());
 
+            System.out.println("Nastavuji váhy IDF");
             // reindex IDF
             this.invertedIndex.setUpDictionaryItemScales();
 
-            this.setUpDocumentEuclidValue(documentBags);
+            System.out.println("Nastavuji euklidovské střední hodnoty");
+
+            // nacachuju si euklidovský střední hodnoty dokumentů
+            this.invertedIndex.setUpDocumentEuclidValueList(documentBags);
+
+            // uložení indexu do souboru
+            SerializedDataHelper.saveIndex(this.invertedIndex);
 
         }
         else
@@ -73,31 +84,12 @@ public class Index implements Indexer
             System.out.println("Načítám data");
             this.invertedIndex = SerializedDataHelper.loadIndex();
             System.out.println("Načteno");
-
-            this.invertedIndex.print();
         }
-
-
 
     }
 
-    /**
-     * Vypočítá euklidovskou hodnotu ke každému dokumentu
-     * @param documentBags
-     */
-    private void setUpDocumentEuclidValue(ArrayList<DocumentBag> documentBags)
+    public InvertedIndex getInvertedIndex()
     {
-        for (DocumentBag documentBag : documentBags)
-        {
-            float euclidValue = 0;
-            for (String documentWord : documentBag.getWords())
-            {
-                euclidValue += this.invertedIndex.getDocumentWordTFIDF(documentWord, documentBag.getId());
-            }
-
-            documentBag.setEuclidDocumentValue(euclidValue);
-        }
+        return invertedIndex;
     }
-
-
 }

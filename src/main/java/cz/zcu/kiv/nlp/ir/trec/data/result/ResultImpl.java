@@ -10,4 +10,10 @@ import cz.zcu.kiv.nlp.ir.trec.data.result.AbstractResult;
  * která dědí od abstraktní třídy {@link AbstractResult}
  */
 public class ResultImpl extends AbstractResult {
+
+    public ResultImpl(String documentId, float score)
+    {
+        this.documentID = documentId;
+        this.score = score;
+    }
 }

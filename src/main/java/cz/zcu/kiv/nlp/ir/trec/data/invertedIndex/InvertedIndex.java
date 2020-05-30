@@ -3,11 +3,12 @@ package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 import cz.zcu.kiv.nlp.ir.trec.model.VectorSpaceModel;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class InvertedIndex implements Serializable
 {
-    private HashMap<String, InvertedIndexItem> invertedIndex = new HashMap<>();
+    protected HashMap<String, InvertedIndexItem> invertedIndex = new HashMap<>();
 
     final static long serialVersionUID = -5097715898427114010L;
 
@@ -21,7 +22,7 @@ public class InvertedIndex implements Serializable
         }
         else
         {
-            this.invertedIndex.put(word, new InvertedIndexItem(documentBag));
+            this.invertedIndex.put(word, new InvertedIndexItem(word, documentBag));
         }
     }
 
@@ -42,9 +43,9 @@ public class InvertedIndex implements Serializable
 
     public void setUpDictionaryItemScales()
     {
-        for (String name: invertedIndex.keySet()){
+        for (String word: invertedIndex.keySet()){
 
-            InvertedIndexItem item = invertedIndex.get(name);
+            InvertedIndexItem item = invertedIndex.get(word);
 
             this.setUpIDF(item);
 
@@ -52,9 +53,89 @@ public class InvertedIndex implements Serializable
         }
     }
 
+    /**
+     * Vypočítá euklidovskou hodnotu ke každému dokumentu
+     * @param documentBags
+     */
+    public void setUpDocumentEuclidValueList(ArrayList<DocumentBag> documentBags)
+    {
+        for (DocumentBag documentBag : documentBags)
+        {
+            this.setUpDocumentEuclidValueBag(documentBag);
+        }
+    }
+
+    public void setUpDocumentEuclidValueBag(DocumentBag documentBag)
+    {
+        float euclidValue = 0;
+        for (String documentWord : documentBag.getWords())
+        {
+            float wordDocumentTfIdgValue = this.getDocumentWordTFIDF(documentWord, documentBag.getId());
+            euclidValue += Math.pow(wordDocumentTfIdgValue, 2);
+        }
+
+        documentBag.setEuclidDocumentValue((float)Math.sqrt(euclidValue));
+    }
+
     public float getDocumentWordTFIDF(String word, String documentId)
     {
-        return this.invertedIndex.get(word).getDocumentWordTFIDF(documentId);
+        if (this.invertedIndex.containsKey(word))
+        {
+            return this.invertedIndex.get(word).getDocumentWordTFIDF(documentId);
+        }
+
+        return 0;
+
+    }
+
+    public Set<InvertedIndexItem> getSpecificWords(Set<String> words)
+    {
+        Set<InvertedIndexItem> items = new HashSet<>();
+
+        for (String word : words)
+        {
+            if (this.invertedIndex.containsKey(word))
+            {
+                items.add(this.invertedIndex.get(word));
+            }
+        }
+
+        return items;
+    }
+
+    public Set<DocumentBag> getRelevantDocumentBagsForQuery(Set<String> queryWords)
+    {
+        Set<DocumentBag> documentBags = new HashSet<>();
+
+        // postupně projdu slova v query a najdu k nim slova v indexu (invertedItemIndex)
+        for (String word : queryWords)
+        {
+            if (this.invertedIndex.containsKey(word))
+            {
+                InvertedIndexItem item = this.invertedIndex.get(word);
+
+                // z jednotlivých invertedItemIndex projdu dokumenty v kterých se nachází slova
+                for (String documentId : item.getDocumentWordStats().keySet())
+                {
+                    // budu ukládat jejich bagy
+                    WordStats wordStat = item.getDocumentWordStat(documentId);
+
+                    documentBags.add(wordStat.getDocumentBag());
+                }
+            }
+        }
+
+        return documentBags;
+    }
+
+    public InvertedIndexItem getIndexItem(String word)
+    {
+        if (this.invertedIndex.containsKey(word))
+        {
+            return this.invertedIndex.get(word);
+        }
+
+        return null;
     }
 
     public void print()
@@ -83,5 +164,10 @@ public class InvertedIndex implements Serializable
     public void setIndexedDocumentCount(int count)
     {
         this.indexedDocumentCount = count;
+    }
+
+    public int getInvertedIndexSize()
+    {
+        return this.invertedIndex.size();
     }
 }

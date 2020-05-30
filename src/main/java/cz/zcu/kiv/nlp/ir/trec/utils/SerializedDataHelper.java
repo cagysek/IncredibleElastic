@@ -3,7 +3,7 @@ package cz.zcu.kiv.nlp.ir.trec.utils;
 import cz.zcu.kiv.nlp.ir.trec.config.Config;
 import cz.zcu.kiv.nlp.ir.trec.data.invertedIndex.InvertedIndex;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
-import cz.zcu.kiv.nlp.ir.trec.data.object.Topic;
+import cz.zcu.kiv.nlp.ir.trec.data.Topic;
 import org.apache.log4j.Logger;
 
 import java.io.*;

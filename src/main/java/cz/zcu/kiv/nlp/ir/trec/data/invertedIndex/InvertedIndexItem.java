@@ -12,9 +12,12 @@ public class InvertedIndexItem implements Serializable
 
     private float idf;
 
+    private String word;
 
-    public InvertedIndexItem(DocumentBag documentBag)
+
+    public InvertedIndexItem(String word, DocumentBag documentBag)
     {
+        this.word = word;
         this.documentWordStats.put(documentBag.getId(), new WordStats(documentBag));
     }
 
@@ -37,7 +40,22 @@ public class InvertedIndexItem implements Serializable
 
     public float getDocumentWordTFIDF(String documentId)
     {
-        return this.documentWordStats.get(documentId).getTfIdf();
+        if (this.documentWordStats.containsKey(documentId))
+        {
+            return this.documentWordStats.get(documentId).getTfIdf();
+        }
+
+        return 0;
+    }
+
+    public WordStats getDocumentWordStat(String documentId)
+    {
+        if (this.documentWordStats.containsKey(documentId))
+        {
+            return  this.documentWordStats.get(documentId);
+        }
+
+        return null;
     }
 
     public int getDf()
@@ -54,4 +72,10 @@ public class InvertedIndexItem implements Serializable
     {
         this.idf = idf;
     }
+
+    public String getWord()
+    {
+        return word;
+    }
+
 }

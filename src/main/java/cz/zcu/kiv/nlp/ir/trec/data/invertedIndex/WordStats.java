@@ -29,16 +29,6 @@ public class WordStats implements Serializable
         return count;
     }
 
-    public float getLogTf()
-    {
-        return logTf;
-    }
-
-    public void setLogTf(float logTf)
-    {
-        this.logTf = logTf;
-    }
-
     public float getTfIdf()
     {
         return tfIdf;

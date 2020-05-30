@@ -6,9 +6,17 @@ import java.util.List;
 
 public class BooleanSearcher implements Searcher
 {
+    private int resultCount = 10;
+
     @Override
     public List<Result> search(String query)
     {
         return null;
+    }
+
+    @Override
+    public void setResultCount(int resultCount)
+    {
+        this.resultCount = resultCount;
     }
 }
