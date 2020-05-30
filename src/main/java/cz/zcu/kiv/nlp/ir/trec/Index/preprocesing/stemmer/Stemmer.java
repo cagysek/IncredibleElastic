@@ -1,4 +1,4 @@
-package cz.zcu.kiv.nlp.ir.trec.Index.stemmer;
+package cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.stemmer;
 
 /**
  * Created by tigi on 29.2.2016.

@@ -1,8 +1,8 @@
 package cz.zcu.kiv.nlp.ir.trec.Index.preprocesing;
 
 
-import cz.zcu.kiv.nlp.ir.trec.Index.stemmer.Stemmer;
-import cz.zcu.kiv.nlp.ir.trec.Index.tokenizer.Tokenizer;
+import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.stemmer.Stemmer;
+import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.tokenizer.Tokenizer;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 
 import java.text.Normalizer;

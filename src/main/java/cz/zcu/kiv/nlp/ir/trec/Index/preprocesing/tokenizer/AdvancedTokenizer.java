@@ -1,4 +1,4 @@
-package cz.zcu.kiv.nlp.ir.trec.Index.tokenizer;
+package cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.tokenizer;
 
 import java.text.Normalizer;
 import java.util.ArrayList;

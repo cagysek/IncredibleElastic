@@ -3,8 +3,8 @@ package cz.zcu.kiv.nlp.ir.trec;
 import cz.zcu.kiv.nlp.ir.trec.Index.Index;
 import cz.zcu.kiv.nlp.ir.trec.Index.loader.LoaderFactory;
 import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.Preprocessing;
-import cz.zcu.kiv.nlp.ir.trec.Index.stemmer.CzechStemmerAgressive;
-import cz.zcu.kiv.nlp.ir.trec.Index.tokenizer.AdvancedTokenizer;
+import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.stemmer.CzechStemmerLight;
+import cz.zcu.kiv.nlp.ir.trec.Index.preprocesing.tokenizer.AdvancedTokenizer;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
 import cz.zcu.kiv.nlp.ir.trec.data.enums.ESearcherType;
@@ -66,7 +66,7 @@ public class TestTrecEval {
     public static void main(String args[]) throws IOException {
        // configureLogger();
         long time1 = System.currentTimeMillis();
-        Preprocessing preprocessing = new Preprocessing(new CzechStemmerAgressive(),
+        Preprocessing preprocessing = new Preprocessing(new CzechStemmerLight(),
                                                         new AdvancedTokenizer(),
                                                         IOUtils.getStopWords(),
                              false,
@@ -147,7 +147,7 @@ public class TestTrecEval {
 
     private static String runTrecEval(String predictedFile) throws IOException {
 
-        String commandLine = "./trec_eval.8.1/./trec_eval -q -c -M1000" +
+        String commandLine = "./trec_eval.8.1/./trec_eval" +
                 " ./trec_eval.8.1/czech" +
                 " " + predictedFile;
 

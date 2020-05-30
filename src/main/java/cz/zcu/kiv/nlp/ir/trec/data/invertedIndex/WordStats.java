@@ -8,8 +8,6 @@ public class WordStats implements Serializable
 
     private int count = 1;
 
-    private float logTf;
-
     private float tfIdf;
 
     private DocumentBag documentBag;
