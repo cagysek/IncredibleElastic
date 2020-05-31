@@ -56,8 +56,9 @@ public class BooleanSearcher implements Searcher
 
             query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
             //query = "(sea AND NOT live) OR NOT (fish OR NOT popular)";
-            //query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
+            query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
             query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
+           // query = "";
 
             Query q = parser.parse(query, "");
 
@@ -76,17 +77,17 @@ public class BooleanSearcher implements Searcher
                 {
                     case MUST:
                         lastOccur = BooleanClause.Occur.MUST;
-                        tmp = this.processQuery(clause, false);
+                        tmp = this.processQuery(clause);
                         result = this.and(result, tmp, firstLoop);
                         break;
                     case SHOULD:
                         lastOccur = BooleanClause.Occur.SHOULD;
-                        tmp = this.processQuery(clause, false);
+                        tmp = this.processQuery(clause);
 
                         result = this.or(result, tmp);
                         break;
                     case MUST_NOT:
-                        tmp = this.processQuery(clause, false);
+                        tmp = this.processQuery(clause);
 
                         if (lastOccur == BooleanClause.Occur.SHOULD)
                         {
@@ -120,20 +121,13 @@ public class BooleanSearcher implements Searcher
         return null;
     }
 
-    private Set<String> processQuery(BooleanClause booleanClause, boolean isMustNot)
+    private Set<String> processQuery(BooleanClause booleanClause)
     {
             if (booleanClause.getQuery() instanceof TermQuery)
             {
                 String preprocessedTerm = this.preprocessing.processText(booleanClause.getQuery().toString()).get(0);
 
-                if (isMustNot)
-                {
-                    return this.getDocumentIdsExceptTerm(preprocessedTerm);
-                }
-                else
-                {
-                    return this.getRelatedDocumentIds(preprocessedTerm);
-                }
+                return this.getRelatedDocumentIds(preprocessedTerm);
             }
             else
             {
@@ -151,14 +145,7 @@ public class BooleanSearcher implements Searcher
                         {
                             lastOccur = BooleanClause.Occur.MUST;
 
-                            if (isMustNot)
-                            {
-                                result = this.notOr(result, this.processQuery(clause, true));
-                            }
-                            else
-                            {
-                                result = this.and(result, this.processQuery(clause, false), i == 0);
-                            }
+                            result = this.and(result, this.processQuery(clause), i == 0);
 
                             break;
                         }
@@ -166,14 +153,7 @@ public class BooleanSearcher implements Searcher
                         {
                             lastOccur = BooleanClause.Occur.SHOULD;
 
-                            if (isMustNot)
-                            {
-                                result = this.notAnd(result, this.processQuery(clause, true), i == 0);
-                            }
-                            else
-                            {
-                                result = this.or(result, this.processQuery(clause, false));
-                            }
+                            result = this.or(result, this.processQuery(clause));
 
                             break;
                         }
@@ -181,7 +161,7 @@ public class BooleanSearcher implements Searcher
                         {
 
                             Set<String> tmp;
-                            tmp = this.processQuery(clause, false);
+                            tmp = this.processQuery(clause);
 
                             if (lastOccur == BooleanClause.Occur.SHOULD)
                             {
@@ -280,6 +260,5 @@ public class BooleanSearcher implements Searcher
 
         return notList;
     }
-
 
 }

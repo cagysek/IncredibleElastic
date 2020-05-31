@@ -40,7 +40,7 @@ public class Index implements Indexer
      */
     public void index(List<Document> documents)
     {
-        if (true)
+        if (false)
         {
             System.out.println("Začínám indexovat");
 

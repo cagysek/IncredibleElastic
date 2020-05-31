@@ -77,7 +77,7 @@ public class TestTrecEval {
 
         Index index = new Index(preprocessing);
 
-        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Test).loadDocuments();
+        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Czech).loadDocuments();
 
 
         index.index(documents);
@@ -87,7 +87,7 @@ public class TestTrecEval {
 
 
         Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.BOOLEAN, preprocessing, index.getInvertedIndex());
-List<Result> results = searcher.search("fish OR NOT aquarium");
+List<Result> results = searcher.search("(Praha OR (text1 AND NOT text2)) AND NOT (Brno OR NOT (Praha AND NOT Plzeň)) OR NOT Ostrava");
           printResults(results);
 
 return;
