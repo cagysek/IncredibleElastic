@@ -54,6 +54,11 @@ public class BooleanSearcher implements Searcher
         {
             PrecedenceQueryParser parser = new PrecedenceQueryParser();
 
+            query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
+            //query = "(sea AND NOT live) OR NOT (fish OR NOT popular)";
+            //query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
+            query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
+
             Query q = parser.parse(query, "");
 
             BooleanQuery booleanQuery = (BooleanQuery)q;
@@ -62,23 +67,35 @@ public class BooleanSearcher implements Searcher
 
             boolean firstLoop = true;
 
+            BooleanClause.Occur lastOccur = null;
+
             for (BooleanClause clause : booleanQuery.clauses())
             {
                 Set<String> tmp;
                 switch (clause.getOccur())
                 {
                     case MUST:
+                        lastOccur = BooleanClause.Occur.MUST;
                         tmp = this.processQuery(clause, false);
                         result = this.and(result, tmp, firstLoop);
                         break;
                     case SHOULD:
+                        lastOccur = BooleanClause.Occur.SHOULD;
                         tmp = this.processQuery(clause, false);
 
                         result = this.or(result, tmp);
                         break;
                     case MUST_NOT:
-                        tmp = this.processQuery(clause, true);
-                        result = this.not(result, tmp, firstLoop);
+                        tmp = this.processQuery(clause, false);
+
+                        if (lastOccur == BooleanClause.Occur.SHOULD)
+                        {
+                            result = this.notOr(result, tmp);
+                        }
+                        else
+                        {
+                            result = this.notAnd(result, tmp, firstLoop);
+                        }
                 }
 
                 firstLoop = false;
@@ -94,7 +111,8 @@ public class BooleanSearcher implements Searcher
 
             return tmp;
 
-        } catch (QueryNodeException e)
+        }
+        catch (QueryNodeException e)
         {
             e.printStackTrace();
         }
@@ -122,6 +140,7 @@ public class BooleanSearcher implements Searcher
                 Set<String> result = new HashSet<>();
 
                 BooleanQuery booleanQuery = (BooleanQuery)booleanClause.getQuery();
+                BooleanClause.Occur lastOccur = null;
 
                 int i = 0;
                 for (BooleanClause clause : booleanQuery.clauses())
@@ -130,9 +149,11 @@ public class BooleanSearcher implements Searcher
                     {
                         case MUST:
                         {
+                            lastOccur = BooleanClause.Occur.MUST;
+
                             if (isMustNot)
                             {
-                                result = this.or(result, this.processQuery(clause, true));
+                                result = this.notOr(result, this.processQuery(clause, true));
                             }
                             else
                             {
@@ -143,10 +164,11 @@ public class BooleanSearcher implements Searcher
                         }
                         case SHOULD:
                         {
+                            lastOccur = BooleanClause.Occur.SHOULD;
+
                             if (isMustNot)
                             {
-                                result = this.and(result, this.processQuery(clause, true), i == 0);
-
+                                result = this.notAnd(result, this.processQuery(clause, true), i == 0);
                             }
                             else
                             {
@@ -157,8 +179,18 @@ public class BooleanSearcher implements Searcher
                         }
                         case MUST_NOT:
                         {
-                            result = this.not(result, this.processQuery(clause, true), i == 0);
 
+                            Set<String> tmp;
+                            tmp = this.processQuery(clause, false);
+
+                            if (lastOccur == BooleanClause.Occur.SHOULD)
+                            {
+                                result = this.notOr(result, tmp);
+                            }
+                            else
+                            {
+                                result = this.notAnd(result, tmp, i == 0);
+                            }
                             break;
                         }
                     }
@@ -217,16 +249,37 @@ public class BooleanSearcher implements Searcher
                 .collect(Collectors.toSet()));
     }
 
-    private Set<String> not(Set<String> documentIds1, Set<String> documentIds2, boolean justReturnDocument2)
+    private Set<String> notAnd(Set<String> documentIds1, Set<String> documentIds2, boolean justReturnDocument2)
     {
         if (justReturnDocument2)
         {
             return documentIds2;
         }
+        Set<String> notList = new HashSet<>(this.allDocumentIds);
+        notList.removeAll(documentIds2);
 
-        return new HashSet<>(documentIds1.stream()
-                .filter(str -> documentIds2.contains(str))
-                .collect(Collectors.toSet()));
+        Set<String> results = new HashSet<>();
+
+        for (String docId : documentIds1)
+        {
+            if (notList.contains(docId))
+            {
+                results.add(docId);
+            }
+        }
+
+        return results;
     }
+
+    private Set<String> notOr(Set<String> documentIds1, Set<String> documentIds2)
+    {
+        Set<String> notList = new HashSet<>(this.allDocumentIds);
+        notList.removeAll(documentIds2);
+
+        notList.addAll(documentIds1);
+
+        return notList;
+    }
+
 
 }
