@@ -16,4 +16,9 @@ public class ResultImpl extends AbstractResult {
         this.documentID = documentId;
         this.score = score;
     }
+
+    public ResultImpl(String documentId)
+    {
+        this.documentID = documentId;
+    }
 }

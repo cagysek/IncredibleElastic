@@ -14,7 +14,7 @@ public class SearcherFactory
         }
         else if (searcherType == ESearcherType.BOOLEAN)
         {
-            return new BooleanSearcher();
+            return new BooleanSearcher(preprocessing, invertedIndex);
         }
 
         return null;

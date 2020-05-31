@@ -2,6 +2,8 @@ package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InvertedIndexItem implements Serializable
 {
@@ -56,6 +58,11 @@ public class InvertedIndexItem implements Serializable
         }
 
         return null;
+    }
+
+    public Set<String> getDocumentsIds()
+    {
+        return new HashSet<>(this.documentWordStats.keySet());
     }
 
     public int getDf()

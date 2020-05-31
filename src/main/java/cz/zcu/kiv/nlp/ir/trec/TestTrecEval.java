@@ -77,7 +77,8 @@ public class TestTrecEval {
 
         Index index = new Index(preprocessing);
 
-        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Czech).loadDocuments();
+        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Test).loadDocuments();
+
 
         index.index(documents);
         long time2 = System.currentTimeMillis();
@@ -85,8 +86,12 @@ public class TestTrecEval {
         System.out.println("Index time: " + ((time2 - time1) * 0.001));
 
 
-        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.VSM, preprocessing, index.getInvertedIndex());
+        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.BOOLEAN, preprocessing, index.getInvertedIndex());
+List<Result> results = searcher.search("fish OR NOT aquarium");
+          printResults(results);
 
+return;
+/*
         time1 = System.currentTimeMillis();
 
        // List<Result> results = searcher.search("Relevantní dokumenty mohou hovořit buď o zdravotních rizicích, nebo o skutečném propuknutí choroby či onemocnění způsobených kontaminovanou vodou.");
@@ -141,7 +146,7 @@ public class TestTrecEval {
             e.printStackTrace();
         }
 
-
+*/
 
     }
 

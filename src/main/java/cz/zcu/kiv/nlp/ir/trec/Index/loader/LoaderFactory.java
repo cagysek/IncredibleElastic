@@ -20,6 +20,10 @@ public class LoaderFactory
         {
             return new ArticleLoader(Config.getArticleDataPath());
         }
+        else if (loaderType == ELoaderType.Test)
+        {
+            return new TestLoader();
+        }
 
         return null;
 

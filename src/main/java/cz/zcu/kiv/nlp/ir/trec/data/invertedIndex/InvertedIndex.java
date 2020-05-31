@@ -138,6 +138,18 @@ public class InvertedIndex implements Serializable
         return null;
     }
 
+    public Set<String> getAllDocumentsIds()
+    {
+        Set<String> documentIds = new HashSet<>();
+
+        for (String term : invertedIndex.keySet())
+        {
+            documentIds.addAll(invertedIndex.get(term).getDocumentsIds());
+        }
+
+        return documentIds;
+    }
+
     public void print()
     {
         for (String name: invertedIndex.keySet()){
