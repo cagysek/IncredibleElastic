@@ -17,12 +17,12 @@
             <TableView fx:id="tableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#showElement" prefHeight="348.0" prefWidth="352.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="35.0">
               <columns>
                 <TableColumn fx:id="columnId" prefWidth="75.0" text="ID" />
-                <TableColumn fx:id="columnTitle" minWidth="100.0" prefWidth="275.0" text="Title" />
+                <TableColumn fx:id="columnTitle" minWidth="100.0" prefWidth="272.0" text="Title" />
               </columns>
             </TableView>
-            <TextField fx:id="idInput" layoutX="371.0" layoutY="23.0" AnchorPane.leftAnchor="374.0" AnchorPane.rightAnchor="5.0" />
-            <TextArea fx:id="titleInput" layoutX="371.0" layoutY="81.0" prefHeight="57.0" prefWidth="200.0" wrapText="true" AnchorPane.leftAnchor="373.0" AnchorPane.rightAnchor="5.0" />
-            <TextArea fx:id="textInput" layoutX="371.0" layoutY="167.0" prefHeight="114.0" prefWidth="262.0" wrapText="true" AnchorPane.leftAnchor="373.0" AnchorPane.rightAnchor="5.0" />
+            <TextField fx:id="idInput" layoutX="362.0" layoutY="23.0" prefHeight="27.0" prefWidth="273.0" AnchorPane.leftAnchor="362.0" AnchorPane.rightAnchor="5.0" />
+            <TextArea fx:id="titleInput" layoutX="371.0" layoutY="81.0" prefHeight="57.0" prefWidth="200.0" wrapText="true" AnchorPane.leftAnchor="362.0" AnchorPane.rightAnchor="5.0" />
+            <TextArea fx:id="textInput" layoutX="371.0" layoutY="167.0" prefHeight="114.0" prefWidth="262.0" wrapText="true" AnchorPane.leftAnchor="362.0" AnchorPane.rightAnchor="5.0" />
             <Button layoutX="384.0" layoutY="294.0" mnemonicParsing="false" onAction="#addRecord" text="Vložit" />
             <Button layoutX="475.0" layoutY="294.0" mnemonicParsing="false" onAction="#updateRecord" text="Upravit" />
             <Button layoutX="562.0" layoutY="294.0" mnemonicParsing="false" onAction="#deleteRecord" text="Smazat" />
