@@ -15,16 +15,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class EditWindow
+public class EditController
 {
-
-    private Scene firstScene;
 
     private Index index;
     private List<Document> documents;
@@ -90,8 +86,8 @@ public class EditWindow
 
             if (this.sendUpdatedDocuments)
             {
-                App app = loader.getController();
-                app.setUpdatedDocuments(this.documents);
+                AppController appController = loader.getController();
+                appController.setUpdatedDocuments(this.documents);
             }
 
             Scene secondScene = new Scene(pane);

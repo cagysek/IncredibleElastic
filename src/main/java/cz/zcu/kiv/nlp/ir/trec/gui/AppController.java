@@ -17,27 +17,19 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
-public class App extends Application
+public class AppController extends Application
 {
-
-    private Stage stage;
 
     @FXML
     private TextField searchInput;
@@ -72,17 +64,9 @@ public class App extends Application
 
     private Preprocessing preprocessing;
 
-    List<Document> documents;
-
-    private Scene secondScene;
+    private List<Document> documents;
 
     private boolean documentsUpdated = false;
-
-    @FXML
-    private Pagination testPagi;
-
-
-    private ObservableList<String> items = FXCollections.observableArrayList();
 
 
     public static void main(String[] args)
@@ -93,16 +77,12 @@ public class App extends Application
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-
-        this.stage = primaryStage;
-
-
         FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getClassLoader().getResource("layout.fxml"));
         Parent root = firstPaneLoader.load();
 
         Scene firstScene = new Scene(root);
 
-        this.stage.setScene(firstScene);
+        primaryStage.setScene(firstScene);
 
         primaryStage.show();
 
@@ -154,36 +134,8 @@ public class App extends Application
 
         }
 
-
-/*
-        int totalPage = (int) (Math.ceil(items.size() * 1.0 / 10));
-        testPagi.setPageCount(totalPage);
-        testPagi.setCurrentPageIndex(0);
-        changeTableView(0, 10);
-        testPagi.currentPageIndexProperty().addListener(
-                (observable, oldValue, newValue) -> changeTableView(newValue.intValue(), 10));
-
-*/
         this.infoLabel.setText("Připraven");
 
-    }
-
-    private void changeTableView(int index, int limit) {
-
-        int fromIndex = index * limit;
-
-        int toIndex = Math.min(fromIndex + 10, 0);
-        resultsView.setItems(FXCollections.observableList(items.subList(fromIndex, toIndex)));
-
-    }
-
-    private Node createPage(int pageIndex) {
-
-        int fromIndex = pageIndex * 10;
-        int toIndex = Math.min(fromIndex + 10, 0);
-        resultsView.setItems(FXCollections.observableList(items.subList(fromIndex, toIndex)));
-System.out.println(pageIndex);
-        return new BorderPane(resultsView);
     }
 
     private void createNewIndex()
@@ -229,7 +181,7 @@ System.out.println(pageIndex);
 
         List<Result> results = searcher.search(searchInput.getText());
 
-        this.items = FXCollections.observableArrayList();
+        ObservableList<String> items = FXCollections.observableArrayList();
 
         for(Result result : results)
         {
@@ -286,8 +238,8 @@ System.out.println(pageIndex);
         {
             FXMLLoader editLoader = new FXMLLoader(getClass().getClassLoader().getResource("edit.fxml"));
             Parent secondPane = editLoader.load();
-            EditWindow editWindow = editLoader.getController();
-            editWindow.setData(this.index, this.documents);
+            EditController editController = editLoader.getController();
+            editController.setData(this.index, this.documents);
             Scene secondScene = new Scene(secondPane);
 
             Window window = ((Node) actionEvent.getTarget()).getScene().getWindow();
