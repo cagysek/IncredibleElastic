@@ -149,7 +149,13 @@ public class EditController
     @FXML
     private void addRecord()
     {
-        String docId = this.idInput.getText();
+        String docId = this.idInput.getText().trim();
+
+        if (docId.isEmpty())
+        {
+            this.statusLabel.setText("Nevyplnili jste ID");
+            return;
+        }
 
         // check if id is not used
         if (this.getDocumentById(docId) != null)
@@ -179,7 +185,12 @@ public class EditController
     private void updateRecord()
     {
         // load hidden id value of selected document
-        String docId = this.editId.getText();
+        String docId = this.editId.getText().trim();
+        if (docId.isEmpty())
+        {
+            this.statusLabel.setText("Vyberte nejdřív dokument");
+            return;
+        }
 
         DocumentNew document = (DocumentNew) this.getDocumentById(docId);
 
@@ -215,7 +226,13 @@ public class EditController
     @FXML
     private void deleteRecord()
     {
-        String docId = this.editId.getText();
+        String docId = this.editId.getText().trim();
+
+        if (docId.isEmpty())
+        {
+            this.statusLabel.setText("Vyberte nejdřív dokument");
+            return;
+        }
 
         DocumentNew document = (DocumentNew) this.getDocumentById(docId);
 

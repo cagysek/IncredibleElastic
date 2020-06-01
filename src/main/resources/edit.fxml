@@ -32,7 +32,7 @@
             <Button layoutX="404.0" layoutY="331.0" mnemonicParsing="false" onAction="#save" prefHeight="27.0" prefWidth="200.0" text="Ulož změny a přegeneruj index" />
             <Button layoutX="5.0" layoutY="-13.0" mnemonicParsing="false" onAction="#loadMainWindow" text="Zpět" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
             <Label fx:id="statusLabel" layoutX="12.0" layoutY="378.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-            <Label fx:id="editId" layoutX="364.0" layoutY="345.0" opacity="0.0" text="Label" />
+            <Label fx:id="editId" layoutX="364.0" layoutY="345.0" opacity="0.0" />
             <Separator layoutX="114.0" layoutY="377.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </children>
     </AnchorPane>
