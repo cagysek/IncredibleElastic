@@ -31,6 +31,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main window of application
+ */
 public class AppController extends Application
 {
 
@@ -61,8 +64,6 @@ public class AppController extends Application
     @FXML
     private RadioButton czechDataRadio;
 
-    private ELoaderType loadedData;
-
     private Index index;
 
     private Preprocessing preprocessing;
@@ -72,6 +73,11 @@ public class AppController extends Application
     private boolean documentsUpdated = false;
 
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args)
     {
         launch(args);
@@ -91,11 +97,15 @@ public class AppController extends Application
 
     }
 
+    /**
+     * Initialize.
+     */
     @FXML
     public void initialize()
     {
         this.infoLabel.setText("Načítám data...");
 
+        // set up preprocessing
         this.preprocessing = new Preprocessing(new CzechStemmerLight(),
                 new AdvancedTokenizer(),
                 IOUtils.getStopWords(),
@@ -105,8 +115,10 @@ public class AppController extends Application
                 true
         );
 
+        // set up index
         this.index = new Index(preprocessing);
 
+        // checks if index file exists
         if (!IOUtils.isIndexExists())
         {
             System.out.println("Index neexistuje, vytvářím nový...");
@@ -119,10 +131,13 @@ public class AppController extends Application
 
             try
             {
+                // try load index
                 this.index.loadIndex();
 
+                // mark radiobutton based on data in index
                 this.setUpDataRadioButton();
 
+                // checks loads data from file, depends data type, if documents are updated (from edit window), data are not loaded
                 if (this.index.getDataType() != null && !documentsUpdated)
                 {
                     this.documents = new LoaderFactory().getLoader(this.index.getDataType()).loadDocuments();
@@ -130,6 +145,7 @@ public class AppController extends Application
             }
             catch (Exception e)
             {
+                // if something is wrong with stored data, new index is created
                 System.out.println("Nepodařilo se nahrát uložený index. Vytvářím nový..");
 
                 this.createNewIndex();
@@ -141,15 +157,24 @@ public class AppController extends Application
 
     }
 
+    /**
+     * Creates new index
+     */
     private void createNewIndex()
     {
+        // load default data
         this.documents = new LoaderFactory().getLoader(Config.getDefaultLoader).loadDocuments();
 
+        // index them
         this.index.index(this.documents, Config.getDefaultLoader);
 
+        // mark radio button for selected data
         this.setUpDataRadioButton();
     }
 
+    /**
+     * Marks right radiobutton depends on loaded data
+     */
     private void setUpDataRadioButton()
     {
         if (this.index.getDataType() == ELoaderType.CZECH)
@@ -166,26 +191,35 @@ public class AppController extends Application
         }
     }
 
+    /**
+     * Search method, handler for button "Hledat"
+     */
     @FXML
     private void search()
     {
         this.infoLabel.setText("Vyhledávám...");
 
+        // loads selected search algorithm and data
         RadioButton selectedSearchType = (RadioButton) this.typeSelect.getSelectedToggle();
         RadioButton selectedDataType = (RadioButton) this.dataSelect.getSelectedToggle();
 
         ELoaderType dataType = ELoaderType.getDataTypeById(selectedDataType.getId());
 
-        // zkontroluje jestli se nepřepnuly data, pokud ano udělá novej index
+        // checks loaded data vs selected. If values is not same, loads right data
         this.checkTypeOfIndexedItems(dataType);
 
-        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.getSearchTypeByText(selectedSearchType.getText()), this.preprocessing, this.index.getInvertedIndex());
+        // set up searches
+        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.getSearchTypeByText(selectedSearchType.getText()),
+                                                                this.preprocessing,
+                                                                this.index.getInvertedIndex());
+        // limit result
         searcher.setResultCount(10);
 
         List<Result> results = new ArrayList<>();
 
         try
         {
+            // search given query
             results = searcher.search(searchInput.getText());
         }
         catch (QueryNodeException e)
@@ -200,7 +234,7 @@ public class AppController extends Application
             return;
         }
 
-
+        // convert data for view and shows them
         ObservableList<String> items = FXCollections.observableArrayList();
 
         for(Result result : results)
@@ -214,7 +248,10 @@ public class AppController extends Application
     }
 
 
-
+    /**
+     * Shows detail info about document
+     * Handler for list view item
+     */
     @FXML
     private void showItemInfo()
     {
@@ -235,6 +272,11 @@ public class AppController extends Application
         }
     }
 
+    /**
+     * Compare given loader type with type in index
+     * if values are not same loads right data
+     * @param type
+     */
     private void checkTypeOfIndexedItems(ELoaderType type)
     {
         if (type == this.index.getDataType())
@@ -246,11 +288,14 @@ public class AppController extends Application
 
         this.documents = new LoaderFactory().getLoader(type).loadDocuments();
 
-
         this.index.index(this.documents, type);
-
     }
 
+    /**
+     * Open second scene for edit documents
+     *
+     * @param actionEvent the action event
+     */
     @FXML
     public void openSecondScene(ActionEvent actionEvent) {
 
@@ -259,6 +304,8 @@ public class AppController extends Application
             FXMLLoader editLoader = new FXMLLoader(getClass().getClassLoader().getResource("edit.fxml"));
             Parent secondPane = editLoader.load();
             EditController editController = editLoader.getController();
+
+            // set data for edit scene
             editController.setData(this.index, this.documents);
             Scene secondScene = new Scene(secondPane);
 
@@ -273,6 +320,11 @@ public class AppController extends Application
 
     }
 
+    /**
+     * Sets updated documents from edit window
+     *
+     * @param documents the documents
+     */
     public void setUpdatedDocuments(List<Document> documents)
     {
         this.documents = documents;

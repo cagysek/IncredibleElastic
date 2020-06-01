@@ -18,11 +18,14 @@ import javafx.stage.Window;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Second view which is used for edit documents
+ */
 public class EditController
 {
 
     private Index index;
+
     private List<Document> documents;
 
     @FXML
@@ -51,15 +54,24 @@ public class EditController
 
     private boolean sendUpdatedDocuments = false;
 
+    /**
+     * Sets data for window
+     *
+     * @param index     the index
+     * @param documents the documents
+     */
     public void setData(Index index, List<Document> documents)
     {
         this.index = index;
         this.documents = new ArrayList<>(documents);
 
+        // fill data to table
         this.fillTable();
-
     }
 
+    /**
+     * Fill table.
+     */
     public void fillTable()
     {
         columnId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -68,15 +80,23 @@ public class EditController
         this.tableView.setItems(getInitialTableData());
     }
 
+    /**
+     * Converts data from List to Observable list
+     * @return observableList
+     */
     private ObservableList getInitialTableData()
     {
-
         ObservableList data = FXCollections.observableList(this.documents);
 
         return data;
     }
 
 
+    /**
+     * Load main window.
+     *
+     * @param event the event
+     */
     public void loadMainWindow(ActionEvent event)
     {
         try
@@ -84,6 +104,7 @@ public class EditController
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("layout.fxml"));
             Parent pane = loader.load();
 
+            // if documents are saved, send them back to main window
             if (this.sendUpdatedDocuments)
             {
                 AppController appController = loader.getController();
@@ -102,6 +123,9 @@ public class EditController
         }
     }
 
+    /**
+     * Loads selected item to inputs
+     */
     @FXML
     private void showElement()
     {
@@ -118,11 +142,16 @@ public class EditController
         this.textInput.setText(document.getText());
     }
 
+    /**
+     * Handler for "Vytvořit" button
+     * Adds element
+     */
     @FXML
     private void addRecord()
     {
         String docId = this.idInput.getText();
 
+        // check if id is not used
         if (this.getDocumentById(docId) != null)
         {
             this.statusLabel.setText("Dokument s ID: " + docId + " už existuje!");
@@ -138,14 +167,18 @@ public class EditController
 
         this.refreshTableView();
 
-
         this.statusLabel.setText("Dokument s ID: " + docId + " byl přidán");
 
     }
 
+    /**
+     * Handler for "Upravit" button
+     * Updates selected document
+     */
     @FXML
     private void updateRecord()
     {
+        // load hidden id value of selected document
         String docId = this.editId.getText();
 
         DocumentNew document = (DocumentNew) this.getDocumentById(docId);
@@ -173,10 +206,12 @@ public class EditController
         this.refreshTableView();
 
         this.statusLabel.setText("Dokument s ID: " + newDocId + " byl upraven");
-
-
     }
 
+    /**
+     * Handler for "Vymazat" button
+     * Removes selected document from documents
+     */
     @FXML
     private void deleteRecord()
     {
@@ -193,6 +228,9 @@ public class EditController
 
     }
 
+    /**
+     * Save document and reindex index
+     */
     @FXML
     private void save()
     {
@@ -205,7 +243,11 @@ public class EditController
     }
 
 
-
+    /**
+     * Returns document from documents by id
+     * @param docId document id
+     * @return document|null
+     */
     private Document getDocumentById(String docId)
     {
         for (Document document : documents)
@@ -221,6 +263,7 @@ public class EditController
 
     /**
      * Little magic here
+     * For refresh table view
      */
     private void refreshTableView()
     {

@@ -6,8 +6,15 @@ import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Loader for load testing data. Used only for testing purposes
+ */
 public class TestLoader implements ILoader
 {
+    /**
+     * Loads prepared documents
+     * @return list of documents
+     */
     @Override
     public List<Document> loadDocuments()
     {

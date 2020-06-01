@@ -65,7 +65,9 @@ public class TestTrecEval {
      * Metodu není třeba měnit kromě řádků označených T O D O  - tj. vytvoření objektu třídy {@link Index} a
      */
     public static void main(String args[]) throws IOException {
-       // configureLogger();
+        configureLogger();
+
+        // inicializace preprocesingu
         long time1 = System.currentTimeMillis();
         Preprocessing preprocessing = new Preprocessing(new CzechStemmerLight(),
                                                         new AdvancedTokenizer(),
@@ -76,23 +78,32 @@ public class TestTrecEval {
                                      true
         );
 
+        // vytvoření preprocessingu
         Index index = new Index(preprocessing);
         index.setDataType(ELoaderType.CZECH);
 
+        // načtení dat te souboru. Loader získán přes factory
         List<Document> documents = new LoaderFactory().getLoader(ELoaderType.CZECH).loadDocuments();
 
+        // zaindexocání dokumentů
+        if (true)
+        {
+            index.index(documents, ELoaderType.CZECH);
+        }
+        else
+        {
+            index.loadIndex();
+        }
 
-        index.index(documents, ELoaderType.CZECH);
         long time2 = System.currentTimeMillis();
 
         System.out.println("Index time: " + ((time2 - time1) * 0.001));
-
-
-        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.BOOLEAN, preprocessing, index.getInvertedIndex());
-
         System.out.println("Konec indexování");
 
+        System.out.println("Vyhledávám...");
 
+        // inicializace vyhledávače
+        Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.VSM, preprocessing, index.getInvertedIndex());
 
         List<Topic> topics = SerializedDataHelper.loadTopic(new File(OUTPUT_DIR + "/topicData.bin"));
 
@@ -134,9 +145,8 @@ public class TestTrecEval {
             if (resultHits.size() == 0) {
                 lines.add(t.getId() + " Q0 " + "abc" + " " + "99" + " " + 0.0 + " runindex1");
             }
-
         }
-     //   final File outputFile = new File(OUTPUT_DIR + "/results 2020-05-29_16_46_860.txt");
+
         final File outputFile = new File(OUTPUT_DIR + "/results " + SerializedDataHelper.SDF.format(System.currentTimeMillis()) + ".txt");
         IOUtils.saveFile(outputFile, lines);
         //try to run evaluation

@@ -3,8 +3,17 @@ package cz.zcu.kiv.nlp.ir.trec.Index.loader;
 import cz.zcu.kiv.nlp.ir.trec.config.Config;
 import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
 
+/**
+ * Factory for get loader depends on type
+ */
 public class LoaderFactory
 {
+    /**
+     * Gets loader.
+     *
+     * @param loaderType the loader type
+     * @return the loader
+     */
     public ILoader getLoader(ELoaderType loaderType)
     {
         if (loaderType == null)

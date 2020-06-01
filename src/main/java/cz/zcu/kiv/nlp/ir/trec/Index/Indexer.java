@@ -9,12 +9,7 @@ import java.util.List;
 /**
  * Created by Tigi on 6.1.2015.
  *
- * Rozhraní, pro indexaci dokumentů.
- *
- * Pokud potřebujete/chcete můžete přidat další metody např. pro indexaci po jednotlivých dokumentech
- * a jiné potřebné metody (např. CRUD operace update, delete, ... dokumentů), ale zachovejte původní metodu.
- *
- * metodu index implementujte ve třídě {@link Index}
+ * Interface, for indexing
  */
 public interface Indexer {
 

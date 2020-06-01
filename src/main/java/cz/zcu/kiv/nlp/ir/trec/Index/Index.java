@@ -14,15 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author tigi
+ * The type Index.
  *
- * Třída reprezentující index.
- *
- * Tuto třídu doplňte tak aby implementovala rozhranní {@link Indexer} a {@link Searcher}.
- * Pokud potřebujete, přidejte další rozhraní, která tato třída implementujte nebo
- * přidejte metody do rozhraní {@link Indexer} a {@link Searcher}.
- *
- *
+ * @author tigi Třída reprezentující index.
  */
 public class Index implements Indexer
 {
@@ -31,6 +25,11 @@ public class Index implements Indexer
 
     private InvertedIndex invertedIndex = new InvertedIndex();
 
+    /**
+     * Instantiates a new Index.
+     *
+     * @param preprocessing the preprocessing
+     */
     public Index(Preprocessing preprocessing)
     {
         this.preprocessing = preprocessing;
@@ -46,13 +45,17 @@ public class Index implements Indexer
 
         System.out.println("Začínám indexovat");
 
-        // temp list pro držení referencí na dokumenty pro pozdější průchod pro vypočítání střední hodnot dokumentů
+        // temp list for keep references on documents for later iterating for calculate euclid document values
         ArrayList<DocumentBag> documentBags = new ArrayList<>();
 
+        // iterate given documents
         for (Document document : documents)
         {
+            // create document bag (reference for document, shared across all words. Used for obtain from one word other words in document)
+            // reference for document stored in all his words.
             DocumentBag documentBag = new DocumentBag(document.getId());
 
+            // adds all words from document to index
             for (String word : this.preprocessing.processDocument(document))
             {
                 documentBag.addWord(word);
@@ -60,12 +63,13 @@ public class Index implements Indexer
                 this.invertedIndex.add(word, documentBag);
             }
 
+            // save reference to list
             documentBags.add(documentBag);
         }
 
         System.out.println("Zaindexováno dokumentů: " + documents.size() + ". Počet slov: " + this.invertedIndex.getInvertedIndexSize());
 
-        // nastavím do dictionary počet dokumentů kolik se indexovalo
+        // set up how many documents is indexed
         this.invertedIndex.setIndexedDocumentCount(documents.size());
 
         System.out.println("Nastavuji váhy IDF");
@@ -74,18 +78,23 @@ public class Index implements Indexer
 
         System.out.println("Nastavuji euklidovské střední hodnoty");
 
-        // nacachuju si euklidovský střední hodnoty dokumentů
+        // calculate euclid values for all documents
+        // this is why documents bags are stored to list (you dont need iterate over all word and search unique documents ids)
         this.invertedIndex.setUpDocumentEuclidValueList(documentBags);
 
+        // set up which data was loaded
         this.invertedIndex.setDataType(loaderType);
 
         System.out.println("Ukládám index");
 
-        // uložení indexu do souboru
+        // save index to file
         SerializedDataHelper.saveIndex(this.invertedIndex);
 
     }
 
+    /**
+     * Loads index stored in file
+     */
     public void loadIndex()
     {
         System.out.println("Načítám data");
@@ -95,16 +104,30 @@ public class Index implements Indexer
         System.out.println("Načteno");
     }
 
+
+    /**
+     * Sets data type.
+     *
+     * @param type the type
+     */
     public void setDataType(ELoaderType type)
     {
         this.invertedIndex.setDataType(type);
     }
 
+    /**
+     * Gets data type
+     * @return type
+     */
     public ELoaderType getDataType()
     {
         return this.invertedIndex.getDataType();
     }
 
+    /**
+     * Gets inverted index
+     * @return inverted index
+     */
     public InvertedIndex getInvertedIndex()
     {
         return invertedIndex;

@@ -6,13 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Michal Konkol
+ * Tokenizer class
  */
 public class AdvancedTokenizer implements Tokenizer {
     //cislo |  | html | tecky a ostatni
     public static final String defaultRegex =
              "([0-3]?\\d\\.{1})([01]?\\d\\.{1})([12]{1}\\d{3})|([0-3]?\\d\\.{1})([01]?\\d\\.{1})|[0-9]\\+[01]" // date
-
            + "|(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})" // url check
            + "|([a-z-A-Z]*[*][a-z-A-Z]*)" // pr*sata
            + "|(\\d+[.,](\\d+)?)|([\\p{L}\\d]+)|(<.*?>)|([\\p{Punct}])";

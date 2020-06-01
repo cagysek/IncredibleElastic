@@ -13,21 +13,36 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for load object of type Article
+ */
 public class ArticleLoader implements ILoader
 {
+    /**
+     * path to file to load
+     */
     private String filename;
 
+    /**
+     * Instantiates a new Article loader.
+     *
+     * @param filename the filename
+     */
     public ArticleLoader(String filename)
     {
         this.filename = filename;
     }
 
+    /**
+     * Loads object from file and convert them to document
+     * @return list of documents
+     */
     @Override
     public List<Document> loadDocuments()
     {
         List<Document> documents = new ArrayList<>();
 
-        SimpleDateFormat formatter =new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 
         int i = 0;
         for(Article article : this.getArticleArray(this.filename))
@@ -54,6 +69,11 @@ public class ArticleLoader implements ILoader
         return documents;
     }
 
+    /**
+     * Gets array of Articles from file
+     * @param filename path to file
+     * @return array of articles
+     */
     private Article[] getArticleArray(String filename)
     {
         Gson g = new Gson();

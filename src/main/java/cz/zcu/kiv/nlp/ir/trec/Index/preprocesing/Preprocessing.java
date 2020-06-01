@@ -39,12 +39,21 @@ public class Preprocessing
         this.ignoreSingleCharacter = ignoreSingleCharacter;
     }
 
-
+    /**
+     * Process text from document
+     * @param document document
+     * @return list of preprocessed words
+     */
     public List<String> processDocument(Document document)
     {
         return this.processText(document.getRaw());
     }
 
+    /**
+     * Process string
+     * @param data string
+     * @return list of preprocessed words
+     */
     public List<String> processText(String data)
     {
         if (toLowercase) {
@@ -88,8 +97,6 @@ public class Preprocessing
 
     private String removeAccents(String text)
     {
-
         return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-
     }
 }

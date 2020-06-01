@@ -111,6 +111,10 @@ public class IOUtils {
         }
     }
 
+    /**
+     * Loads stop words
+     * @return set of stop words
+     */
     public static Set<String> getStopWords(){
         Set<String> stopwords = new HashSet<String>();
         String line;
@@ -132,6 +136,10 @@ public class IOUtils {
         return stopwords;
     }
 
+    /**
+     * Test if index file is exists
+     * @return true if file exists, else false
+     */
     public static boolean isIndexExists()
     {
         File indexFile = new File(Config.getIndexPath());

@@ -77,7 +77,10 @@ public class SerializedDataHelper {
         log.info("Data saved to " + outputFile.getPath());
     }
 
-
+    /**
+     * Saves inverted index to file
+     * @param data inverted index to save
+     */
     public static void saveIndex(InvertedIndex data) {
         // save data
         try {
@@ -92,6 +95,10 @@ public class SerializedDataHelper {
         log.info("Index uložen.");
     }
 
+    /**
+     * Loads inverted index
+     * @return inverted index object
+     */
     static public InvertedIndex loadIndex() {
         final Object object;
         try {
