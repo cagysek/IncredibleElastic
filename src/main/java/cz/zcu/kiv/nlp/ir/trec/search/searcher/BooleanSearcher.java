@@ -24,7 +24,9 @@ public class BooleanSearcher implements Searcher
     private final InvertedIndex invertedIndex;
     private final Preprocessing preprocessing;
 
-    private int resultCount = 10;
+    private int limitResultCount = -1;
+
+    private int totalResultCount;
 
     private Set<String> allDocumentIds;
 
@@ -45,7 +47,7 @@ public class BooleanSearcher implements Searcher
     @Override
     public void setResultCount(int resultCount)
     {
-        this.resultCount = resultCount;
+        this.limitResultCount = resultCount;
     }
 
     private List<Result> getResults(String query)
@@ -54,10 +56,10 @@ public class BooleanSearcher implements Searcher
         {
             PrecedenceQueryParser parser = new PrecedenceQueryParser();
 
-            query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
+           // query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
             //query = "(sea AND NOT live) OR NOT (fish OR NOT popular)";
-            query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
-            query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
+           // query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
+           // query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
            // query = "";
 
             Query q = parser.parse(query, "");
@@ -110,7 +112,14 @@ public class BooleanSearcher implements Searcher
                 tmp.add(tmpResult);
             }
 
-            return tmp;
+            this.totalResultCount = tmp.size();
+
+            if (limitResultCount < 0)
+            {
+                return tmp;
+            }
+
+            return tmp.subList(0, this.limitResultCount);
 
         }
         catch (QueryNodeException e)
@@ -125,9 +134,19 @@ public class BooleanSearcher implements Searcher
     {
             if (booleanClause.getQuery() instanceof TermQuery)
             {
-                String preprocessedTerm = this.preprocessing.processText(booleanClause.getQuery().toString()).get(0);
 
-                return this.getRelatedDocumentIds(preprocessedTerm);
+                List<String> preprocessedTerm = this.preprocessing.processText(booleanClause.getQuery().toString());
+
+                // pokud preprocessing odstrani slovo (jedná se třeba o stop slovo)
+                if (preprocessedTerm.size() > 0)
+                {
+                    return this.getRelatedDocumentIds(preprocessedTerm.get(0));
+                }
+                else
+                {
+                    return new HashSet<>();
+                }
+
             }
             else
             {
@@ -261,4 +280,8 @@ public class BooleanSearcher implements Searcher
         return notList;
     }
 
+    public int getTotalResultCount()
+    {
+        return totalResultCount;
+    }
 }

@@ -2,6 +2,7 @@ package cz.zcu.kiv.nlp.ir.trec.Index;
 
 import cz.zcu.kiv.nlp.ir.trec.Index.Index;
 import cz.zcu.kiv.nlp.ir.trec.data.document.Document;
+import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
 
 import java.util.List;
 
@@ -22,5 +23,5 @@ public interface Indexer {
      *
      * @param documents list dokumentů
      */
-    void index(List<Document> documents);
+    void index(List<Document> documents, ELoaderType loaderType);
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="488.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.zcu.kiv.nlp.ir.trec.gui.App">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="450.0" prefWidth="734.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Button fx:id="searchButton" layoutX="549.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#search" prefHeight="45.0" prefWidth="83.0" text="Hledat" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="37.0" />
+            <TextField fx:id="searchInput" layoutX="14.0" layoutY="28.0" prefHeight="27.0" prefWidth="427.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="208.0" AnchorPane.topAnchor="48.0" />
+            <Label fx:id="test" layoutX="14.0" layoutY="6.0" text="Hledat:" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="26.0" />
+            <SplitPane dividerPositions="0.2356687898089172" layoutX="4.0" layoutY="83.0" prefHeight="259.0" prefWidth="630.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="100.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <ListView fx:id="resultsView" layoutX="19.0" layoutY="135.0" onMouseClicked="#showItemInfo" prefHeight="168.0" prefWidth="106.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <TextArea fx:id="documentDetail" layoutX="21.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFF; -fx-text-fill-fx-text-fill: #00ff00#00ff00;" styleClass="-fx-text-fill-fx-text-fill: black" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <Separator layoutX="226.0" layoutY="347.0" prefHeight="4.0" prefWidth="413.0" AnchorPane.bottomAnchor="20.5" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label fx:id="infoLabel" layoutX="14.0" layoutY="349.0" prefHeight="17.0" prefWidth="630.0" text="Info:" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <RadioButton fx:id="czechDataRadio" layoutX="440.0" layoutY="6.0" mnemonicParsing="false" selected="true" text="Školní data" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="25.0">
+               <toggleGroup>
+                  <ToggleGroup fx:id="dataSelect" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="ownDataRadio" layoutX="443.0" layoutY="33.0" mnemonicParsing="false" prefHeight="4.0" prefWidth="97.0" text="Vlastní data" toggleGroup="$dataSelect" AnchorPane.rightAnchor="102.0" AnchorPane.topAnchor="53.0" />
+            <RadioButton fx:id="testDataRadio" layoutX="440.0" layoutY="60.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="122.0" text="Testovací data" toggleGroup="$dataSelect" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="80.0" />
+            <RadioButton layoutX="14.0" layoutY="55.0" mnemonicParsing="false" selected="true" text="VSM" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="75.0">
+               <toggleGroup>
+                  <ToggleGroup fx:id="typeSelect" />
+               </toggleGroup>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton layoutX="72.0" layoutY="55.0" mnemonicParsing="false" text="Boolean" toggleGroup="$typeSelect" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="75.0">
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </RadioButton>
+            <Button layoutX="566.0" mnemonicParsing="false" onAction="#openSecondScene" prefHeight="27.0" prefWidth="83.0" text="Správa Dat" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

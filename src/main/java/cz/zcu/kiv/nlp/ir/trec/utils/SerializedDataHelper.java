@@ -83,7 +83,7 @@ public class SerializedDataHelper {
         try {
             File outputFile = new File(Config.getIndexPath());
 
-            final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(outputFile));
+            final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
             objectOutputStream.writeObject(data);
             objectOutputStream.close();
         } catch (IOException e) {

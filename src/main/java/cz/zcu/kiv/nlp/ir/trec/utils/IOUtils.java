@@ -132,4 +132,11 @@ public class IOUtils {
         return stopwords;
     }
 
+    public static boolean isIndexExists()
+    {
+        File indexFile = new File(Config.getIndexPath());
+
+        return indexFile.exists();
+    }
+
 }

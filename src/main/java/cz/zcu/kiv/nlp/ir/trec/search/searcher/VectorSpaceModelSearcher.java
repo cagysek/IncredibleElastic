@@ -19,7 +19,9 @@ public class VectorSpaceModelSearcher implements Searcher
 
     final private String QUERY_ID = "query";
 
-    private int limitResultCount;
+    private int limitResultCount = -1;
+
+    private int totalResultCount;
 
     public VectorSpaceModelSearcher(Preprocessing preprocessing, InvertedIndex invertedIndex)
     {
@@ -146,21 +148,21 @@ public class VectorSpaceModelSearcher implements Searcher
             i++;
         }
 
-        return tmp;
-        /*
-        List<Result> results = tmp.subList(0, this.resultCount);
+        this.totalResultCount = tmp.size();
 
-        int i = 1;
-        for (Result result : results)
+        if (limitResultCount < 0)
         {
-            ((ResultImpl)result).setRank(i);
-            i++;
+            return tmp;
         }
 
-        return results;
-
-         */
+        return tmp.subList(0, this.limitResultCount);
     }
+
+    public int getTotalResultCount()
+    {
+        return totalResultCount;
+    }
+
 
 
 }

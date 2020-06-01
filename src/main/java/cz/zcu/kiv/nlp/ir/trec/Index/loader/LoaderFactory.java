@@ -12,15 +12,15 @@ public class LoaderFactory
             return null;
         }
 
-        if (loaderType == ELoaderType.Czech)
+        if (loaderType == ELoaderType.CZECH)
         {
             return new CzechLoader(Config.getCzechDataPath());
         }
-        else if (loaderType == ELoaderType.Article)
+        else if (loaderType == ELoaderType.ARTICLE)
         {
             return new ArticleLoader(Config.getArticleDataPath());
         }
-        else if (loaderType == ELoaderType.Test)
+        else if (loaderType == ELoaderType.TEST)
         {
             return new TestLoader();
         }

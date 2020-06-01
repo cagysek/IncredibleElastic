@@ -1,5 +1,6 @@
 package cz.zcu.kiv.nlp.ir.trec.data.invertedIndex;
 
+import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
 import cz.zcu.kiv.nlp.ir.trec.model.VectorSpaceModel;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ public class InvertedIndex implements Serializable
     final static long serialVersionUID = -5097715898427114010L;
 
     private int indexedDocumentCount = 0;
+
+    private ELoaderType dataType;
 
     public void add(String word, DocumentBag documentBag)
     {
@@ -181,5 +184,15 @@ public class InvertedIndex implements Serializable
     public int getInvertedIndexSize()
     {
         return this.invertedIndex.size();
+    }
+
+    public ELoaderType getDataType()
+    {
+        return dataType;
+    }
+
+    public void setDataType(ELoaderType dataType)
+    {
+        this.dataType = dataType;
     }
 }

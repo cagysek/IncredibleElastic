@@ -76,22 +76,19 @@ public class TestTrecEval {
         );
 
         Index index = new Index(preprocessing);
+        index.setDataType(ELoaderType.CZECH);
 
-        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.Czech).loadDocuments();
+        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.CZECH).loadDocuments();
 
 
-        index.index(documents);
+        index.index(documents, ELoaderType.CZECH);
         long time2 = System.currentTimeMillis();
 
         System.out.println("Index time: " + ((time2 - time1) * 0.001));
 
 
         Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.BOOLEAN, preprocessing, index.getInvertedIndex());
-List<Result> results = searcher.search("(Praha OR (text1 AND NOT text2)) AND NOT (Brno OR NOT (Praha AND NOT Plzeň)) OR NOT Ostrava");
-          printResults(results);
 
-return;
-/*
         time1 = System.currentTimeMillis();
 
        // List<Result> results = searcher.search("Relevantní dokumenty mohou hovořit buď o zdravotních rizicích, nebo o skutečném propuknutí choroby či onemocnění způsobených kontaminovanou vodou.");
@@ -117,7 +114,7 @@ return;
             //to ovlivní výsledné vyhledávání - zkuste změnit a uvidíte jaký MAP (Mean Average Precision) dostanete pro jednotlivé
             //kombinace např. pokud budete vyhledávat jen pomocí title (t.getTitle()) nebo jen pomocí description (t.getDescription())
             //nebo jejich kombinací (t.getTitle() + " " + t.getDescription())
-            List<Result> resultHits = searcher.search(t.getTitle() + " " + t.getDescription());
+            List<Result> resultHits = searcher.search(t.getTitle() + " " + t.getDescription() + " " + t.getNarrative());
 
             Comparator<Result> cmp = new Comparator<Result>() {
                 public int compare(Result o1, Result o2) {
@@ -135,6 +132,7 @@ return;
             if (resultHits.size() == 0) {
                 lines.add(t.getId() + " Q0 " + "abc" + " " + "99" + " " + 0.0 + " runindex1");
             }
+
         }
      //   final File outputFile = new File(OUTPUT_DIR + "/results 2020-05-29_16_46_860.txt");
         final File outputFile = new File(OUTPUT_DIR + "/results " + SerializedDataHelper.SDF.format(System.currentTimeMillis()) + ".txt");
@@ -145,9 +143,6 @@ return;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-*/
-
     }
 
     private static String runTrecEval(String predictedFile) throws IOException {

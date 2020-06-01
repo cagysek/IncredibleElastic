@@ -1,5 +1,7 @@
 package cz.zcu.kiv.nlp.ir.trec.config;
 
+import cz.zcu.kiv.nlp.ir.trec.data.enums.ELoaderType;
+
 public class Config
 {
     public static String OUTPUT_DIR = "./TREC";
@@ -36,4 +38,6 @@ public class Config
     {
         return OUTPUT_DIR + FILENAME_INDEX;
     }
+
+    public static ELoaderType getDefaultLoader = ELoaderType.ARTICLE;
 }
