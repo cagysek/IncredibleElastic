@@ -37,7 +37,7 @@ public class BooleanSearcher implements Searcher
     }
 
     @Override
-    public List<Result> search(String queryString)
+    public List<Result> search(String queryString) throws QueryNodeException
     {
         this.allDocumentIds = this.invertedIndex.getAllDocumentsIds();
 
@@ -50,10 +50,8 @@ public class BooleanSearcher implements Searcher
         this.limitResultCount = resultCount;
     }
 
-    private List<Result> getResults(String query)
+    private List<Result> getResults(String query) throws QueryNodeException
     {
-        try
-        {
             PrecedenceQueryParser parser = new PrecedenceQueryParser();
 
            // query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
@@ -114,20 +112,13 @@ public class BooleanSearcher implements Searcher
 
             this.totalResultCount = tmp.size();
 
-            if (limitResultCount < 0)
+            if (limitResultCount < 0 || tmp.size() < this.limitResultCount)
             {
                 return tmp;
             }
 
             return tmp.subList(0, this.limitResultCount);
 
-        }
-        catch (QueryNodeException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     private Set<String> processQuery(BooleanClause booleanClause)

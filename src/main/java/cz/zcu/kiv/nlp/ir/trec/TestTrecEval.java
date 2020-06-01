@@ -15,6 +15,7 @@ import cz.zcu.kiv.nlp.ir.trec.search.searcher.SearcherFactory;
 import cz.zcu.kiv.nlp.ir.trec.utils.IOUtils;
 import cz.zcu.kiv.nlp.ir.trec.utils.SerializedDataHelper;
 import org.apache.log4j.*;
+import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
 
 import java.io.*;
 import java.util.*;
@@ -109,12 +110,22 @@ public class TestTrecEval {
         List<String> lines = new ArrayList<>();
 
         for (Topic t : topics) {
-            //TODO vytvoření dotazu, třída Topic představuje dotaz pro vyhledávání v zaindexovaných dokumentech
-            //a obsahuje tři textová pole title, description a narrative. To jak sestavíte dotaz je na Vás a pravděpodobně
-            //to ovlivní výsledné vyhledávání - zkuste změnit a uvidíte jaký MAP (Mean Average Precision) dostanete pro jednotlivé
-            //kombinace např. pokud budete vyhledávat jen pomocí title (t.getTitle()) nebo jen pomocí description (t.getDescription())
-            //nebo jejich kombinací (t.getTitle() + " " + t.getDescription())
-            List<Result> resultHits = searcher.search(t.getTitle() + " " + t.getDescription() + " " + t.getNarrative());
+            List<Result> resultHits;
+            try
+            {
+               resultHits = searcher.search(t.getTitle() + " " + t.getDescription() + " " + t.getNarrative());
+            }
+            catch (QueryNodeException e)
+            {
+                System.out.println("Zkontroluj Boolean query dotaz");
+                return;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Ops");
+                e.printStackTrace();
+                return;
+            }
 
             Comparator<Result> cmp = new Comparator<Result>() {
                 public int compare(Result o1, Result o2) {

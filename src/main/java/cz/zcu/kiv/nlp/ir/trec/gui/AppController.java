@@ -25,7 +25,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppController extends Application
@@ -179,7 +182,23 @@ public class AppController extends Application
         Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.getSearchTypeByText(selectedSearchType.getText()), this.preprocessing, this.index.getInvertedIndex());
         searcher.setResultCount(10);
 
-        List<Result> results = searcher.search(searchInput.getText());
+        List<Result> results = new ArrayList<>();
+
+        try
+        {
+            results = searcher.search(searchInput.getText());
+        }
+        catch (QueryNodeException e)
+        {
+            this.infoLabel.setText("Query není validní. Zkotrolujte jí prosím");
+        }
+        catch (Exception e)
+        {
+            this.infoLabel.setText("Ops");
+            e.printStackTrace();
+            return;
+        }
+
 
         ObservableList<String> items = FXCollections.observableArrayList();
 

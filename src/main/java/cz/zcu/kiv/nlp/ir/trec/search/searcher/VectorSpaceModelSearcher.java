@@ -150,7 +150,7 @@ public class VectorSpaceModelSearcher implements Searcher
 
         this.totalResultCount = tmp.size();
 
-        if (limitResultCount < 0)
+        if (limitResultCount < 0 || tmp.size() < this.limitResultCount)
         {
             return tmp;
         }
