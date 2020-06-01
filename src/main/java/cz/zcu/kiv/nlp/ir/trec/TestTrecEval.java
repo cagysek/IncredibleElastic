@@ -90,16 +90,7 @@ public class TestTrecEval {
 
         Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.BOOLEAN, preprocessing, index.getInvertedIndex());
 
-        time1 = System.currentTimeMillis();
-
-       // List<Result> results = searcher.search("Relevantní dokumenty mohou hovořit buď o zdravotních rizicích, nebo o skutečném propuknutí choroby či onemocnění způsobených kontaminovanou vodou.");
-        time2 = System.currentTimeMillis();
-
-        System.out.println("Search time: " + ((time2 - time1) * 0.001));
-
-      //  printResults(results);
-
-        System.out.println("Konec");
+        System.out.println("Konec indexování");
 
 
 

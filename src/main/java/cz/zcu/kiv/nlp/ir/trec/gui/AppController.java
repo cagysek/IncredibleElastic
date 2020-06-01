@@ -190,7 +190,8 @@ public class AppController extends Application
         }
         catch (QueryNodeException e)
         {
-            this.infoLabel.setText("Query není validní. Zkotrolujte jí prosím");
+            this.infoLabel.setText("Query není validní. Zkotrolujte jí!");
+            return;
         }
         catch (Exception e)
         {
