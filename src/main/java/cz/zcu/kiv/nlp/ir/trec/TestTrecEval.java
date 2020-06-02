@@ -67,6 +67,8 @@ public class TestTrecEval {
     public static void main(String args[]) throws IOException {
         configureLogger();
 
+        ELoaderType loaderType = ELoaderType.CZECH;
+
         // inicializace preprocesingu
         long time1 = System.currentTimeMillis();
         Preprocessing preprocessing = new Preprocessing(new CzechStemmerLight(),
@@ -80,15 +82,15 @@ public class TestTrecEval {
 
         // vytvoření preprocessingu
         Index index = new Index(preprocessing);
-        index.setDataType(ELoaderType.CZECH);
+        index.setDataType(loaderType);
 
         // načtení dat te souboru. Loader získán přes factory
-        List<Document> documents = new LoaderFactory().getLoader(ELoaderType.CZECH).loadDocuments();
+        List<Document> documents = new LoaderFactory().getLoader(loaderType).loadDocuments();
 
         // zaindexocání dokumentů
         if (true)
         {
-            index.index(documents, ELoaderType.CZECH);
+            index.index(documents, loaderType);
         }
         else
         {
@@ -104,6 +106,7 @@ public class TestTrecEval {
 
         // inicializace vyhledávače
         Searcher searcher = new SearcherFactory().getSearcher(ESearcherType.VSM, preprocessing, index.getInvertedIndex());
+        searcher.setResultCount(1000);
 
         List<Topic> topics = SerializedDataHelper.loadTopic(new File(OUTPUT_DIR + "/topicData.bin"));
 
@@ -115,7 +118,7 @@ public class TestTrecEval {
             List<Result> resultHits;
             try
             {
-               resultHits = searcher.search(t.getTitle() + " " + t.getDescription() + " " + t.getNarrative());
+               resultHits = searcher.search(t.getTitle() + " " + t.getDescription());
             }
             catch (QueryNodeException e)
             {

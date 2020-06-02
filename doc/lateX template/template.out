@@ -1,0 +1,33 @@
+\BOOKMARK [1][-]{section.1}{Zad\341n\355}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Minim\341ln\355 nutn\341 funkcnost semestr\341n\355 pr\341ce pro z\355sk\341n\355 15 bodu/z\341poctu}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Nadstandardn\355 funkcnost \(lze z\355skat a\236 dal\235\355ch 15 bodu\)}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Anal\375za}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Fulltextov\351 vyhled\341v\341n\355}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Invertovan\375 index}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.3}{TF-IDF}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.4}{Vector space model}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.5}{Boolean vyhled\341v\341n\355}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Implementace}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Invertovan\375 index}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Tr\355da InvertIndex}{subsection.3.1}% 12
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Tr\355da InvertIndexItem}{subsection.3.1}% 13
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Tr\355da WordStats}{subsection.3.1}% 14
+\BOOKMARK [3][-]{subsubsection.3.1.4}{Tr\355da DocumentBag}{subsection.3.1}% 15
+\BOOKMARK [3][-]{subsubsection.3.1.5}{Nacten\355 dat}{subsection.3.1}% 16
+\BOOKMARK [3][-]{subsubsection.3.1.6}{Preprocessing}{subsection.3.1}% 17
+\BOOKMARK [3][-]{subsubsection.3.1.7}{Ulo\236en\351 informace}{subsection.3.1}% 18
+\BOOKMARK [3][-]{subsubsection.3.1.8}{Princip vytvoren\355 indexu}{subsection.3.1}% 19
+\BOOKMARK [3][-]{subsubsection.3.1.9}{Nac\355t\341n\355 ulo\236en\351ho indexu}{subsection.3.1}% 20
+\BOOKMARK [2][-]{subsection.3.2}{Vyhled\341v\341n\355}{section.3}% 21
+\BOOKMARK [3][-]{subsubsection.3.2.1}{V\375ber vyhled\341vace}{subsection.3.2}% 22
+\BOOKMARK [3][-]{subsubsection.3.2.2}{VSM}{subsection.3.2}% 23
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Boolean}{subsection.3.2}% 24
+\BOOKMARK [2][-]{subsection.3.3}{GUI}{section.3}% 25
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Spu\235ten\355}{subsection.3.3}% 26
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Vyhled\341v\341n\355 dat}{subsection.3.3}% 27
+\BOOKMARK [3][-]{subsubsection.3.3.3}{CRUD dat a doindexov\341n\355}{subsection.3.3}% 28
+\BOOKMARK [1][-]{section.4}{U\236ivatelsk\341 pr\355rucka}{}% 29
+\BOOKMARK [2][-]{subsubsection.4.0.1}{Start aplikace}{section.4}% 30
+\BOOKMARK [2][-]{subsection.4.1}{Vyhled\341v\341n\355}{section.4}% 31
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Editace}{subsection.4.1}% 32
+\BOOKMARK [1][-]{section.5}{Z\341ver}{}% 33

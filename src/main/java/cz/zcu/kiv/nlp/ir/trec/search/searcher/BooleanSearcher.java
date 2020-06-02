@@ -96,11 +96,11 @@ public class BooleanSearcher implements Searcher
             // lucene parser used here. PrecedenceQueryParser - takes care about boolean priorities
             PrecedenceQueryParser parser = new PrecedenceQueryParser();
 
-           // query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
+            // testing queries
+            // query = "(czechia OR NOT aquarium) AND NOT (fish AND NOT tropical) OR NOT found";
             //query = "(sea AND NOT live) OR NOT (fish OR NOT popular)";
-           // query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
-           // query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
-           // query = "";
+            // query = "(live OR NOT czechia) AND NOT (tropical AND NOT also)";
+            // query = "found OR sea AND also OR (country AND NOT environment) AND NOT popular";
 
             Query q = parser.parse(query, "");
 
